@@ -1,0 +1,14 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+prompt-toolkit = ">=2.0.4"
+ipykernel = "*"
+pandas = "*"
+
+[requires]
+python_version = "3.8"
