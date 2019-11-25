@@ -1,17 +1,10 @@
 *.vim
 .DS_Store
 
+*.pyc
 .ipynb_checkpoints
-
-data/
-!data/source/.gitkeep
-!data/manual/.gitkeep
-!data/processed/.gitkeep
-!data/html_reports/.gitkeep
-!data/public/.gitkeep
-!data/documentation/.gitkeep
-
-scratch/
-!scratch/.gitkeep
-
+.python-version
+__pycache__/
 .env
+
+venv/
