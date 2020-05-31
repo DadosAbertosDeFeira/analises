@@ -1,5 +1,8 @@
 # Análises
 
+![CI](https://github.com/DadosAbertosDeFeira/analises/workflows/CI/badge.svg)
+![Converte Notebook para script Python](https://github.com/DadosAbertosDeFeira/analises/workflows/Converte%20Notebook%20para%20um%20script%20Python/badge.svg)
+
 Repositório para abrigar as análises dos Dados Abertos de Feira.
 A coleta é feita pela [Maria Quitéria](https://github.com/DadosAbertosDeFeira/maria-quiteria).
 
