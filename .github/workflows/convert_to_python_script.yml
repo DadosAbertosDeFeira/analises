@@ -24,7 +24,7 @@ jobs:
       - name: Commita novos scripts
         uses: EndBug/add-and-commit@v4
         with:
-          ref: ${GITHUB_REF##*/}
+          ref: ${{ github.head_ref }}
           message: "Gera scripts Python"
           add: "*.py"
         env:
