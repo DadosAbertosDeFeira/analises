@@ -6,7 +6,7 @@
 # http://www.transparencia.feiradesantana.ba.gov.br/index.php?view=despesascovid
 # 
 
-# In[1]:
+# In[ ]:
 
 
 import pandas as pd
@@ -17,7 +17,7 @@ despesas = pd.read_csv('despesas-covid-30.05.2020.csv')
 despesas.head()
 
 
-# In[2]:
+# In[ ]:
 
 
 colunas = ['crawled_at', 'crawled_from']
@@ -39,7 +39,7 @@ despesas = despesas.sort_values('date', ascending=False)
 despesas.head()
 
 
-# In[3]:
+# In[ ]:
 
 
 # disponível em: https://gist.github.com/anapaulagomes/379525586f941a1183aa448dad282f90#file-especificacao-despesas-tcm-bahia-csv
@@ -51,7 +51,7 @@ classificacao = pd.read_csv(
 classificacao
 
 
-# In[4]:
+# In[ ]:
 
 
 despesas['classificacao'] = despesas['group'].str.extract('(\d{8})')
@@ -60,13 +60,13 @@ despesas_com_classificacao = despesas.merge(classificacao, left_on=['classificac
 despesas_com_classificacao
 
 
-# In[5]:
+# In[ ]:
 
 
 despesas.shape, despesas_com_classificacao.shape
 
 
-# In[6]:
+# In[ ]:
 
 
 despesas.groupby('process_number').count()
@@ -74,14 +74,14 @@ despesas.groupby('process_number').count()
 despesas.groupby(['process_number', 'phase'])['value'].sum().to_frame()
 
 
-# In[7]:
+# In[ ]:
 
 
 import seaborn as sns
 sns.set_style("whitegrid")
 
 
-# In[8]:
+# In[ ]:
 
 
 pagamentos = despesas_com_classificacao[despesas_com_classificacao['phase'] == 'PAGAMENTO']
@@ -99,7 +99,7 @@ plt.ticklabel_format(style='plain', axis='y')
 plt.show()
 
 
-# In[9]:
+# In[ ]:
 
 
 pagamentos.groupby(
@@ -107,7 +107,7 @@ pagamentos.groupby(
 )['value'].sum().to_frame()
 
 
-# In[10]:
+# In[ ]:
 
 
 pagamentos.groupby(
@@ -115,7 +115,7 @@ pagamentos.groupby(
 )['value'].sum().to_frame()
 
 
-# In[11]:
+# In[ ]:
 
 
 print(pagamentos.describe())
@@ -126,7 +126,7 @@ print(pagamentos.describe())
 print(pagamentos['value'].sum())
 
 
-# In[12]:
+# In[ ]:
 
 
 # despesas_com_classificacao.to_csv('despesas-covid19-prefeitura.csv')

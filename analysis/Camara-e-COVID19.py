@@ -40,7 +40,7 @@
 # Se você não é uma pessoa técnica, não se preocupe. Vamos continuar o texto
 # junto com o código.
 
-# In[1]:
+# In[ ]:
 
 
 import pandas as pd
@@ -66,7 +66,7 @@ atas.describe()
 # Bom, vamos então filtrar os dados e pegar apenas as atas entre 1 de Janeiro
 # e 28 de Março:
 
-# In[2]:
+# In[ ]:
 
 
 atas["date"] = pd.to_datetime(atas["date"])
@@ -78,7 +78,7 @@ atas.head()
 
 # Bom, quantas atas temos entre Janeiro e Março?
 
-# In[3]:
+# In[ ]:
 
 
 len(atas)
@@ -100,7 +100,7 @@ len(atas)
 # - COVID, COVID-19
 # - coronavírus, corona vírus
 
-# In[4]:
+# In[ ]:
 
 
 termos_covid = "COVID-19|coronavírus"
@@ -108,7 +108,7 @@ atas = atas[atas['file_content'].str.contains(termos_covid, case=False)]
 atas
 
 
-# In[5]:
+# In[ ]:
 
 
 len(atas)
@@ -120,7 +120,7 @@ len(atas)
 # Atenção: o conteúdo das atas é grande para ser mostrado aqui. Por isso vamos
 # destacar as partes que contém os termos encontrados.
 
-# In[6]:
+# In[ ]:
 
 
 import re
@@ -145,7 +145,7 @@ atas[['date', 'event_type', 'title', 'file_urls', 'trecho']]
 # para exportar os dados para um novo CSV. Nesse CSV vai ter os dados filtrados por data
 # e também o trecho, além do conteúdo da ata completo.
 
-# In[7]:
+# In[ ]:
 
 
 def converte_para_arquivo(df, nome_do_arquivo):
@@ -170,7 +170,7 @@ converte_para_arquivo(atas, 'analise-covid19-atas-camara.csv')
 # Vamos filtrar os diários do legislativo, separar por data, como fizemos com as
 # atas, e ver o que foi feito.
 
-# In[8]:
+# In[ ]:
 
 
 # esse arquivo pode ser baixado aqui: https://www.kaggle.com/anapaulagomes/dirios-oficiais-de-feira-de-santana
@@ -198,7 +198,7 @@ diarios.head()
 # Vamos filtrar o conteúdo dos arquivos que contém os termos relacionados ao COVID-19
 # (os mesmos que utilizamos com as atas).
 
-# In[9]:
+# In[ ]:
 
 
 diarios = diarios[diarios['file_content'].str.contains(termos_covid, case=False)]
@@ -211,7 +211,7 @@ diarios[['date', 'power', 'year_and_edition', 'file_urls', 'trecho']]
 # foram encontrados. O que será que eles dizem? Vamos exportar os resultados para
 # um novo CSV e continuar no Google Sheets.
 
-# In[10]:
+# In[ ]:
 
 
 converte_para_arquivo(diarios, 'analise-covid19-diarios-camara.csv')
