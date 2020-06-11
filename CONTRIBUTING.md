@@ -62,9 +62,6 @@ rapidamente e não envolva mudanças estruturais, você é bem vindo a abrir um 
 
 * Antes de qualquer coisa, tente rodar o projeto localmente.
 
-* Instale o `pre-commit` localmente. Dessa forma, o código que você _commitar_ já estará
-formatado, com os _imports_ ordenados e mais arrumado.
-
 * Rode os testes localmente. Além de ser uma boa prática, previne idas e vindas nas
 revisões.
 
