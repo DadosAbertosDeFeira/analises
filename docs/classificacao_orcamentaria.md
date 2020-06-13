@@ -18,4 +18,4 @@ Exemplos:
 | 31301100 | Vencimentos e Vantagens Fixas - Pessoal Civil                | 31300000        |
 | 31301101 | Vencimento e vantagens fixas Pessoal Civil (Vencimento Básico) | 31301100        |
 
-O arquivo da natureza das despesas pode ser encontrada [aqui](http://www.tcm.ba.gov.br/wp-content/uploads/2019/10/tabespecificacaodespesa2020.xls). 
+O oficial arquivo da natureza das despesas pode ser encontrada [aqui](http://www.tcm.ba.gov.br/wp-content/uploads/2019/10/tabespecificacaodespesa2020.xls).  Um `.csv` para uso nas análises está disponível [aqui](https://gist.githubusercontent.com/anapaulagomes/379525586f941a1183aa448dad282f90/raw/378f01c23f0ead542a88fde6274b12ba82b84f8e/especificacao-despesas-tcm-bahia.csv).
