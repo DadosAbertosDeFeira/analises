@@ -1,3 +1,6 @@
+import re
+
+
 def identify_code_and_description(row):
     """Identifica classificação da despesa e sua descrição.
     
@@ -72,3 +75,14 @@ def identify_code_and_description(row):
         code_and_description['value'] = row[4]
         code_and_description['group'] = 'SED'
         return code_and_description
+
+
+def extract_classification(string):
+    """Extrai classificação da natureza de uma string e retorna seu código.
+
+    Formato: `339030040000000000 - Medicamentos`
+    Deve retornar: `33903004`
+    """
+    match = re.match(r'\d{8}', string)
+    if match:
+        return match.group(0)

@@ -1,4 +1,4 @@
-from etl.expenses import identify_code_and_description
+from etl.expenses import identify_code_and_description, extract_classification
 import pytest
 
 
@@ -54,3 +54,15 @@ import pytest
 ])
 def test_identify_code_and_description(row, expected_description):
     assert identify_code_and_description(row) == expected_description
+
+
+def test_extract_classification_from_text():
+    text = "339030040000000000 - Medicamentos"
+
+    assert extract_classification(text) == "33903004"
+
+
+def test_return_none_if_extract_classification_is_not_found():
+    text = "Medicamentos31938 1830183"
+
+    assert extract_classification(text) is None
