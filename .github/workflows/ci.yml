@@ -10,7 +10,18 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-
-    - name: Verifica se o Jupyter Notebook está limpo
-      uses: ResearchSoftwareActions/EnsureCleanNotebooksAction@1.1
+      - uses: actions/checkout@v2
+      - name: Configura o Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.8.3
+      - name: Instala dependências
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r dev_requirements.txt
+      - name: Verifica estilos e boas práticas
+        run: |
+          black --check .
+          flake8 .
+      - name: Executa os testes
+        run: pytest
