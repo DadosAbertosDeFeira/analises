@@ -9,9 +9,9 @@
 # In[ ]:
 
 
-import pandas as pd
 import matplotlib.pyplot as plt
-
+import pandas as pd
+import seaborn as sns
 
 despesas = pd.read_csv('despesas-covid-30.05.2020.csv')
 despesas.head()
@@ -77,7 +77,6 @@ despesas.groupby(['process_number', 'phase'])['value'].sum().to_frame()
 # In[ ]:
 
 
-import seaborn as sns
 sns.set_style("whitegrid")
 
 
@@ -131,4 +130,3 @@ print(pagamentos['value'].sum())
 
 # despesas_com_classificacao.to_csv('despesas-covid19-prefeitura.csv')
 # https://drive.google.com/file/d/1SAkAuGuOnuBTC5KT133lJhsYCm40Hfxc/view?usp=sharing
-

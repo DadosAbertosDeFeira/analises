@@ -43,8 +43,9 @@
 # In[ ]:
 
 
-import pandas as pd
+import re
 
+import pandas as pd
 
 # esse arquivo pode ser baixado aqui: https://www.kaggle.com/anapaulagomes/atas-da-cmara-de-vereadores
 atas = pd.read_csv('atas-28.03.2020.csv')
@@ -123,7 +124,6 @@ len(atas)
 # In[ ]:
 
 
-import re
 
 padrao = r'[A-Z][^\\.;]*(coronavírus|covid)[^\\.;]*'
 
