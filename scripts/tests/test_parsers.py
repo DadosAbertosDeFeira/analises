@@ -1,4 +1,4 @@
-from etl.parsers import currency_to_float
+from scripts.parsers import currency_to_float
 import pytest
 
 
