@@ -2,8 +2,13 @@ import pandas as pd
 from glob import glob
 from unidecode import unidecode
 
-# Os arquivos precisam ser salvos no formato ano_mes_entidade.xls (2020_04_prefeitura.xls)
-# O script funciona em xls que possuem o formato
+"""
+Os arquivos precisam ser salvos no formato `ano_mes_entidade.xls`.
+Exemplo: `2020_04_prefeitura.xls`
+
+O script funciona em arquivos `.xls` onde as duas primeiras linhas e as últimas 3 linhas são ignoradas.
+"""
+# O script funciona em xls que possuem o formato:
 # - duas primeiras linhas com informações para descartar
 # - últimas 3 linhas com informações para descartar
 
@@ -62,4 +67,4 @@ df_full["salario_gratificacao"] = df_full["salario_gratificacao"].apply(
 )
 
 # Criar csv a partir do dataframe
-csv = df_full.to_csv(folder + "/contracheques.csv", index=False)
+df_full.to_csv(folder + "/contracheques.csv", index=False)
