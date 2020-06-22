@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configura o Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.8.3
+      - name: Instala dependências
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Verifica estilos e boas práticas
+        run: |
+          black --check .
+          flake8 .
+      - name: Executa os testes
+        run: pytest
