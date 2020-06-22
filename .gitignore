@@ -5,10 +5,16 @@
 .ipynb_checkpoints
 .python-version
 __pycache__/
+.pytest_cache
 .env
 
 venv/
 *.json
 *.csv
 *.zip
+*.xls
+*.xlsx
 
+build/
+dist/
+*.egg-info
