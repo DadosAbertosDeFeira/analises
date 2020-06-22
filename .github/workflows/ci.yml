@@ -18,7 +18,7 @@ jobs:
       - name: Instala dependências
         run: |
           python -m pip install --upgrade pip
-          pip install -r dev_requirements.txt
+          pip install -r requirements.txt
       - name: Verifica estilos e boas práticas
         run: |
           black --check .
