@@ -1,5 +1,7 @@
 # Análises
 
+![CI](https://github.com/DadosAbertosDeFeira/analises/workflows/CI/badge.svg)
+
 Repositório para abrigar as análises dos Dados Abertos de Feira.
 A coleta é feita pela [Maria Quitéria](https://github.com/DadosAbertosDeFeira/maria-quiteria).
 
@@ -33,6 +35,8 @@ Utilizamos a versão 3.8 do Python. Recomendamos fortemente o uso de _virtual en
 das dependências e prevenção de possíveis conflitos com dependências de outros projetos.
 
 ### Dependências
+
+Para instalar as dependências, execute:
 
 ```
 pip install -r requirements.txt
