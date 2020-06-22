@@ -7,9 +7,9 @@ from unidecode import unidecode
 # - duas primeiras linhas com informações para descartar
 # - últimas 3 linhas com informações para descartar
 
-folder = input("Pasta onde estão os xls:")
+pasta = input("Pasta onde estão os xls:")
 
-filepaths = glob(folder + "/*.xls")
+filepaths = glob(pasta + "/*.xls")
 
 # Transformar xls para um único dataframe incluindo colunas extras e tirando cabeçalho e rodapé
 df_list = []
@@ -18,8 +18,8 @@ for path in filepaths:
     df = pd.read_excel(path, skiprows=(0, 1))
     df.drop(df.tail(3).index, inplace=True)
     filename = path.split("/")[-1]
-    name, extension = filename.split(".")
-    ano, mes, entidade = name.split("_")
+    nome, extensao = filename.split(".")
+    ano, mes, entidade = nome.split("_")
     df["ano"] = ano
     df["mes"] = mes
     df["entidade"] = entidade
