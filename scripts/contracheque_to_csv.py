@@ -44,7 +44,7 @@ def concat_xls(filepaths):
         df.drop(df.tail(3).index, inplace=True)
         year, month, area = get_filepath_atts(path)
         df["year"] = year
-        df["month"] = month89
+        df["month"] = month
         df["area"] = area
         df_list.append(df)
 
@@ -69,19 +69,21 @@ def transform_df(df):
     return df
 
 
-if len(sys.argv) < 2:
-    print("Error: Missing folder name as parameter")
-    print("eg: > python contracheque_to_csv.py /User/name/folder")
-    sys.exit()
+if __name__ == "__main__":
 
-folder = sys.argv[1]
+    if len(sys.argv) < 2:
+        print("Error: Missing folder name as parameter")
+        print("eg: > python contracheque_to_csv.py /User/name/folder")
+        sys.exit()
 
-filepaths = xls_from_folderpath(folder)
+    folder = sys.argv[1]
 
-df = concat_xls(filepaths)
+    filepaths = xls_from_folderpath(folder)
 
-df = transform_df(df)
+    df = concat_xls(filepaths)
 
-csv_path = str(folder) + "/contracheques.csv"
-df.to_csv(csv_path, index=False)
-print(f"File saved in {csv_path}")
+    df = transform_df(df)
+
+    csv_path = str(folder) + "/contracheques.csv"
+    df.to_csv(csv_path, index=False)
+    print(f"File saved in {csv_path}")
