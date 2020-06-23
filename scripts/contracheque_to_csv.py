@@ -10,9 +10,10 @@ from scripts.parsers import currency_to_float
 Os arquivos precisam ser salvos no formato `ano_mes_entidade.xls`.
 Exemplo: `2020_04_prefeitura.xls`
 
-O script funciona em arquivos `.xls` onde as duas primeiras linhas e as últimas 3 linhas são ignoradas.
-
-No caso de erro 'Workbook corruption: seen[3] == 4' abra os arquivos xls dos contracheques, salvar como e tente novamente.
+O script funciona em arquivos `.xls` onde as duas primeiras linhas 
+e as últimas 3 linhas são ignoradas.
+No caso de erro 'Workbook corruption: seen[3] == 4' 
+abra os arquivos xls dos contracheques, salvar como e tente novamente.
 """
 
 
@@ -43,7 +44,7 @@ def concat_xls(filepaths):
         df.drop(df.tail(3).index, inplace=True)
         year, month, area = get_filepath_atts(path)
         df["year"] = year
-        df["month"] = month
+        df["month"] = month89
         df["area"] = area
         df_list.append(df)
 
