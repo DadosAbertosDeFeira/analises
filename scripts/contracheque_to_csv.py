@@ -1,4 +1,5 @@
 import sys
+import argparse
 from unidecode import unidecode
 from pathlib import Path
 
@@ -71,19 +72,20 @@ def transform_df(df):
 
 if __name__ == "__main__":
 
-    if len(sys.argv) < 2:
-        print("Error: Missing folder name as parameter")
-        print("eg: > python contracheque_to_csv.py /User/name/folder")
-        sys.exit()
+    parser = argparse.ArgumentParser(description="Folder with xls files")
+    parser.add_argument(
+        "folder",
+        type=str,
+        help="folder path with the xls to concat and transform in csv",
+    )
+    args = parser.parse_args()
 
-    folder = sys.argv[1]
-
-    filepaths = xls_from_folderpath(folder)
+    filepaths = xls_from_folderpath(args.folder)
 
     df = concat_xls(filepaths)
 
     df = transform_df(df)
 
-    csv_path = str(folder) + "/contracheques.csv"
+    csv_path = str(args) + "/contracheques.csv"
     df.to_csv(csv_path, index=False)
     print(f"File saved in {csv_path}")
