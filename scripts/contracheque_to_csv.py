@@ -86,6 +86,6 @@ if __name__ == "__main__":
 
     df = transform_df(df)
 
-    csv_path = str(args) + "/contracheques.csv"
+    csv_path = str(args.folder) + "/contracheques.csv"
     df.to_csv(csv_path, index=False)
     print(f"File saved in {csv_path}")
