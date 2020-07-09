@@ -24,7 +24,7 @@ def xls_from_folderpath(folder):
     return filepaths
 
 
-def get_filepath_atts(filepath):
+def get_filepath_attributes(filepath):
     filename = filepath.split("/")[-1]
     name, _ = filename.split(".")
     year, month, area = name.split("_")
