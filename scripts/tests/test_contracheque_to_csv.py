@@ -1,7 +1,7 @@
 import pandas as pd
 
 from scripts.contracheque_to_csv import (
-    get_filepath_atts,
+    get_filepath_attributes,
     transform_df,
 )
 
@@ -9,7 +9,7 @@ from scripts.contracheque_to_csv import (
 def test_correct_atts_filepath():
     expected = ("2019", "05", "prefeitura")
     path = "User/name/test/2019_05_prefeitura.xls"
-    assert expected == get_filepath_atts(path)
+    assert expected == get_filepath_attributes(path)
 
 
 def test_change_columns_case():
