@@ -73,11 +73,11 @@ def transform_df(df):
 
 if __name__ == "__main__":
 
-    parser = argparse.ArgumentParser(description="Folder with xls files")
+    parser = argparse.ArgumentParser(description="Pasta com arquivos csv")
     parser.add_argument(
         "folder",
         type=str,
-        help="folder path with the xls to concat and transform in csv",
+        help="path da pasta com os arquivos xls para separados para criar um único csv",
     )
     args = parser.parse_args()
 
