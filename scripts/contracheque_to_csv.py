@@ -44,7 +44,7 @@ def concat_xls(filepaths):
         path = str(path)
         df = pd.read_excel(path, skiprows=(0, 1))
         df.drop(df.tail(3).index, inplace=True)
-        year, month, area = get_filepath_atts(path)
+        year, month, area = get_filepath_attributes(path)
         df["year"] = year
         df["month"] = month
         df["area"] = area
