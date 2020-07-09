@@ -14,7 +14,8 @@ Exemplo: `2020_04_prefeitura.xls`
 O script funciona em arquivos `.xls` onde as duas primeiras linhas 
 e as últimas 3 linhas são ignoradas.
 No caso de erro 'Workbook corruption: seen[3] == 4' 
-abra os arquivos xls dos contracheques, salvar como e tente novamente.
+abra os arquivos `.xls` dos contracheques, use a opção "Salvar Como" para
+salvar uma cópia do arquivo e tente novamente.
 """
 
 
