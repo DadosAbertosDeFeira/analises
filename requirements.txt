@@ -1,6 +1,6 @@
 black==19.10b0
 flake8==3.8.3
-isort==4.3.21
+isort==5.2.2
 jupyter==1.0.0
 matplotlib==3.3.0
 pandas==1.0.5
