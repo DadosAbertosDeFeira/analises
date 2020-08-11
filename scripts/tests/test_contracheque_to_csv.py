@@ -9,7 +9,7 @@ from scripts.contracheque_to_csv import (
 )
 
 
-def test_correct_atts_filepath():
+def test_get_filepath_attributes():
     expected = ("2019", "05", "prefeitura")
     path = "User/name/test/2019_05_prefeitura.xls"
     assert expected == get_filepath_attributes(path)
