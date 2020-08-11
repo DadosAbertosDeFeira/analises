@@ -28,16 +28,13 @@ def xls_from_folderpath(folder):
 def get_filepath_attributes(filepath):
     filename = filepath.split("/")[-1]
     name, _ = filename.split(".")
-    year, month, area = name.split("_")
+    split = name.split("_")
+    year, month = split[0], split[1]
+    area = "_".join(split[2:])
     return year, month, area
 
 
 def concat_xls(filepaths):
-    filepaths = list(filepaths)
-    if not filepaths:
-        print("Error: No xls files in the folder")
-        sys.exit()
-
     df_list = []
 
     for path in filepaths:
@@ -72,7 +69,6 @@ def transform_df(df):
 
 
 if __name__ == "__main__":
-
     parser = argparse.ArgumentParser(description="Pasta com arquivos csv")
     parser.add_argument(
         "folder",
@@ -82,9 +78,11 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     filepaths = xls_from_folderpath(args.folder)
+    if not list(filepaths):
+        print("Error: No xls files in the folder")
+        sys.exit()
 
     df = concat_xls(filepaths)
-
     df = transform_df(df)
 
     csv_path = str(args.folder) + "/contracheques.csv"
