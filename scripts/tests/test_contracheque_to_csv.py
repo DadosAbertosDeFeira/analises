@@ -1,5 +1,4 @@
 import pandas as pd
-import pytest
 
 from scripts.contracheque_to_csv import (
     concat_xls,
