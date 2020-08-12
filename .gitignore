@@ -18,3 +18,5 @@ venv/
 build/
 dist/
 *.egg-info
+
+.dicio/
