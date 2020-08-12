@@ -71,5 +71,5 @@ def test_concat_xls_from_filepaths():
     assert df.iloc[0]["month"] == "01"
     assert df.iloc[0]["area"] in [
         "superintendencia_municipal_de_transito",
-        "2020_01_fundacao_cultural_egberto_tavares_costa",
+        "fundacao_cultural_egberto_tavares_costa",
     ]
