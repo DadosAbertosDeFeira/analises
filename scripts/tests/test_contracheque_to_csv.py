@@ -43,14 +43,16 @@ def test_change_salario_columns_format():
 
 
 def test_xls_from_folderpath():
-    expected_filepaths = [
+    expected_filepaths = {
         "2020_01_superintendencia_municipal_de_transito.xls",
         "2020_01_fundacao_cultural_egberto_tavares_costa.xls",
-    ]
-    filepaths = list(xls_from_folderpath("scripts/tests/files/"))
+    }
 
-    assert filepaths[0].name == expected_filepaths[0]
-    assert filepaths[1].name == expected_filepaths[1]
+    filepaths = {
+        filepath.name for filepath in xls_from_folderpath("scripts/tests/files/")
+    }
+
+    assert filepaths == expected_filepaths
 
 
 def test_return_nothing_if_folder_has_no_xls():
