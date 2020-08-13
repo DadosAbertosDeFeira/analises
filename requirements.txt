@@ -6,3 +6,5 @@ matplotlib==3.3.0
 pandas==1.1.0
 pytest==6.0.1
 seaborn==0.10.1
+unidecode==1.1.1
+xlrd==1.2.0
