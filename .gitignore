@@ -12,8 +12,8 @@ venv/
 *.json
 *.csv
 *.zip
-/*.xls
-/*.xlsx
+*.xls
+*.xlsx
 
 #arquivos de testes
 !**/tests/**/**.xls
