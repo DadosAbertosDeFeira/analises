@@ -15,6 +15,10 @@ venv/
 /*.xls
 /*.xlsx
 
+#arquivos de testes
+!**/tests/**/**.xls
+!**/tests/**/**.xlsx
+
 build/
 dist/
 *.egg-info
