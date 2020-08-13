@@ -1,5 +1,4 @@
-from scripts.parsers import currency_to_float
-from scripts.parsers import limpa_texto
+from scripts.parsers import currency_to_float, limpa_texto
 import pytest
 
 

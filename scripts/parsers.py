@@ -1,3 +1,9 @@
+import nltk
+nltk.download('stopwords')
+from nltk.corpus import stopwords
+import re
+# import unicodedata
+
 def currency_to_float(value):
     """Converte de R$ 69.848,70 (str) para 69848.70 (float)."""
     try:
@@ -5,12 +11,6 @@ def currency_to_float(value):
         return float(cleaned_value)
     except ValueError:
         return
-
-import nltk
-nltk.download('stopwords')
-from nltk.corpus import stopwords
-import re
-# import unicodedata
 
 def limpa_texto(text, return_string=True) -> str or list:
     if (type(text) == float):
