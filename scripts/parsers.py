@@ -1,5 +1,5 @@
-import nltk
 from nltk.corpus import stopwords
+from scripts.stopwords import CUSTOM_STOPWORDS
 import re
 
 # import unicodedata
@@ -27,12 +27,10 @@ def limpa_texto(text, return_string=True) -> str or list:
     # text = ''.join([char for char in nfkd_form if not unicodedata.combining(char)])
 
     # Remove stopwords
-    my_stopwords = stopwords.words("portuguese")
-    with open("stopwords.txt") as f:
-        my_words = f.read().split()
-    my_stopwords = my_stopwords + my_words
+    nltk_stopwords = stopwords.words("portuguese")
+    all_stopwords = nltk_stopwords + CUSTOM_STOPWORDS
 
-    text = [word for word in text.split() if word not in my_stopwords]
+    text = [word for word in text.split() if word not in all_stopwords]
 
     if return_string:
         return " ".join(text)

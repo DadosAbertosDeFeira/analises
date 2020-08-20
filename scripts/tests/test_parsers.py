@@ -25,7 +25,7 @@ def test_currency_to_float(original_value, expected_value):
         ("123oliveira4", "NUM oliveira NUM"),
         ("Onde.Vai", "onde vai"),
         ("AteNÇÃo", "atenção"),
-        ("Qualquer uma destas casas", "casas"),
+        ("Qualquer uma destas xx casas", "casas"),
         ("Pé-De-Moleque", "pé-de-moleque"),
         ("________", ""),
         ("anexo______", "anexo"),
