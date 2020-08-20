@@ -29,6 +29,7 @@ def test_currency_to_float(original_value, expected_value):
         ("Pé-De-Moleque", "pé-de-moleque"),
         ("________", ""),
         ("anexo______", "anexo"),
+        ("neuro-", "neuro-")
     ],
 )
 def test_limpa_texto(texto, texto_limpo):

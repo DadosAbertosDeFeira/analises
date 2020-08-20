@@ -1,8 +1,7 @@
 from nltk.corpus import stopwords
 from scripts.stopwords import CUSTOM_STOPWORDS
 import re
-
-# import unicodedata
+import unicodedata
 
 
 def currency_to_float(value):
@@ -14,7 +13,7 @@ def currency_to_float(value):
         return
 
 
-def limpa_texto(text, return_string=True) -> str or list:
+def limpa_texto(text, remove_acentos=False, return_string=True) -> str or list:
     if type(text) == float:
         return ""
 
@@ -23,8 +22,9 @@ def limpa_texto(text, return_string=True) -> str or list:
     text = " ".join(re.findall(r"\b[A-Za-zÀ-ú]+[-A-Za-zÀ-ú]*", text))
 
     # Remove acentos, cedilhas etc
-    # nfkd_form = unicodedata.normalize('NFKD', text)
-    # text = ''.join([char for char in nfkd_form if not unicodedata.combining(char)])
+    if remove_acentos:
+        nfkd_form = unicodedata.normalize('NFKD', text)
+        text = ''.join([char for char in nfkd_form if not unicodedata.combining(char)])
 
     # Remove stopwords
     nltk_stopwords = stopwords.words("portuguese")
