@@ -1,12 +1,4 @@
-PRONOUNS = [
-    "desta",
-    "destas",
-    "deste",
-    "destes",
-    "qualquer",
-    "das",
-    "seguintes"
-]
+PRONOUNS = ["desta", "destas", "deste", "destes", "qualquer", "das", "seguintes"]
 
 ROMAN_NUMERALS = [
     "i",
@@ -19,16 +11,16 @@ ROMAN_NUMERALS = [
     "viii",
     "ix",
     "xx",
-    "xxi"
+    "xxi",
     "xxii",
     "xxiii",
     "xiv",
     "xv",
-    "xvi",    
+    "xvi",
     "xvii",
     "xviii",
     "xix",
-    "xx"
+    "xx",
 ]
 
 LETTERS = [
