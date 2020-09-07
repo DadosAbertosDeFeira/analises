@@ -62,6 +62,12 @@ rapidamente e não envolva mudanças estruturais, você é bem vindo a abrir um 
 
 * Antes de qualquer coisa, tente rodar o projeto localmente.
 
+* Instale o _pre-commit_ localmente com `pre-commit install`. Da próxima vez que você criar 
+um _commit_ as verificações serão executadas automaticamente. Caso exista alguma falha na 
+formatação, você será informado e o _commit_ só será permitido após correção - alguns linters 
+como o _isort_ já fazem a correção automaticamente mas ainda é necessário _commitar_ novamente. 
+Dessa forma mantemos o código mais arrumado.
+
 * Rode os testes localmente. Além de ser uma boa prática, previne idas e vindas nas
 revisões.
 
