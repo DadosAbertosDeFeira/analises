@@ -1,5 +1,4 @@
 import pandas as pd
-
 from scripts.contracheque_to_csv import (
     concat_xls,
     get_filepath_attributes,

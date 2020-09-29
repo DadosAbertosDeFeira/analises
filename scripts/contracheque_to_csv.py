@@ -1,11 +1,11 @@
-import sys
 import argparse
-from unidecode import unidecode
+import sys
 from pathlib import Path
 
 import pandas as pd
-
 from scripts.parsers import currency_to_float
+from unidecode import unidecode
+
 
 """
 Os arquivos precisam ser salvos no formato `ano_mes_entidade.xls`.

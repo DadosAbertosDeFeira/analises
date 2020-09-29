@@ -21,7 +21,7 @@ da Administração Pública;
 um fim específico, devendo registrar o nome/razão social do credor, valor
 e descrição do que será pago;
 * **Valor Liquidado**: Registra efetivamente a despesa executada. No entanto,
-por ocasião do encerramento do exercício, conforme as normas da Lei Federal 
+por ocasião do encerramento do exercício, conforme as normas da Lei Federal
 n° 4.320/1964, as despesas empenhadas e ainda não liquidadas são inscritas
 em restos a pagar não processados;
 * **Valor Pago**: Consiste na entrega do numerário ao credor e só pode ser
