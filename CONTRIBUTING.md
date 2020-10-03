@@ -14,7 +14,7 @@ Aqui estão alguns recursos importantes que você deve estar ciente antes de com
 
 - [Manual de dados abertos para desenvolvedores](https://www.w3c.br/pub/Materiais/PublicacoesW3C/manual_dados_abertos_desenvolvedores_web.pdf)
 te explicará um pouco sobre o que são e os principais conceitos por trás dos dados abertos.
-- [Materias de Estudo](https://github.com/DadosAbertosDeFeira/analises/wiki/Materiais-para-estudo) materias de estudo sobre orçamento publico e controle social.
+- [Materiais de Estudo](https://github.com/DadosAbertosDeFeira/analises/wiki/Materiais-para-estudo) materiais de estudo sobre orçamento público e controle social.
 
 ## Reportando bugs
 
