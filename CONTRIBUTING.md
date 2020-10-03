@@ -14,6 +14,7 @@ Aqui estão alguns recursos importantes que você deve estar ciente antes de com
 
 - [Manual de dados abertos para desenvolvedores](https://www.w3c.br/pub/Materiais/PublicacoesW3C/manual_dados_abertos_desenvolvedores_web.pdf)
 te explicará um pouco sobre o que são e os principais conceitos por trás dos dados abertos.
+- [Materias de Estudo](https://github.com/DadosAbertosDeFeira/analises/wiki/Materiais-para-estudo) materias de estudo sobre orçamento publico e controle social.
 
 ## Reportando bugs
 
@@ -64,10 +65,10 @@ rapidamente e não envolva mudanças estruturais, você é bem vindo a abrir um 
 
 * Antes de qualquer coisa, tente rodar o projeto localmente.
 
-* Instale o _pre-commit_ localmente com `pre-commit install`. Da próxima vez que você criar 
-um _commit_ as verificações serão executadas automaticamente. Caso exista alguma falha na 
-formatação, você será informado e o _commit_ só será permitido após correção - alguns linters 
-como o _isort_ já fazem a correção automaticamente mas ainda é necessário _commitar_ novamente. 
+* Instale o _pre-commit_ localmente com `pre-commit install`. Da próxima vez que você criar
+um _commit_ as verificações serão executadas automaticamente. Caso exista alguma falha na
+formatação, você será informado e o _commit_ só será permitido após correção - alguns linters
+como o _isort_ já fazem a correção automaticamente mas ainda é necessário _commitar_ novamente.
 Dessa forma mantemos o código mais arrumado.
 
 * Rode os testes localmente. Além de ser uma boa prática, previne idas e vindas nas
