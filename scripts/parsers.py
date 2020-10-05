@@ -7,41 +7,37 @@ def currency_to_float(value):
         return
 
 
-def limpa_proc_licitatorio(proc: str) -> str:
+def limpa_processo_licitatorio(procecimento: str):
     """Corrige typos no campo PROCESSO LICITATORIO no dataset de pagamentos
     Retorna o tipo do processo licitatorio em minúsculo"""
+    if not isinstance(procecimento, str):
+        return
 
-    isento = ["ISENTO", "ENTO", "Isento", "SENTO", "sento"]
-    pregao = ["PREGAO", "REGAO", "Pregao", "EGAO", "egao"]
-    dispensa = ["DISPENSA", "SPENSA", "ISPENSA", "Dispensa", "PENSA", "pensa"]
-    concorrencia = ["CONCORENCIA", "ONCORRENCIA", "NCORRENCIA"]
+    isento = ["isento", "ento", "sento"]
+    pregao = ["pregao", "regao", "egao"]
+    dispensa = ["dispensa", "spensa", "ispensa", "pensa"]
+    concorrencia = ["concorrencia", "concorencia", "oncorrencia", "ncorrencia"]
     inexigibilidade = [
-        "INEXIGIBILIDADE",
-        "NEXIGIBILIDADE",
-        "Inexibilidade",
-        "XIGIBILIDADE",
+        "inexigibilidade",
+        "nexigibilidade",
+        "inexibilidade",
         "xigibilidade",
-        "EXIGIBILIDADE",
         "exigibilidade",
     ]
-    tomada_de_preco = ["TOMADA DE PRECO", "OMADA DE PRECO", "omada de preco"]
+    tomada_de_preco = ["tomada de preco", "omada de preco"]
 
-    if type(proc) != str:
-        return None
-    try:
-        if proc in isento:
-            return "isento"
-        elif proc in pregao:
-            return "pregao"
-        elif proc in dispensa:
-            return "dispensa"
-        elif proc in concorrencia:
-            return "concorrencia"
-        elif proc in inexigibilidade:
-            return "inexigibilidade"
-        elif proc in tomada_de_preco:
-            return "tomada de preco"
-        else:
-            return proc.lower()
-    except TypeError:
-        pass
+    processo = procecimento.lower()
+
+    if processo in isento:
+        return "isento"
+    if processo in pregao:
+        return "pregao"
+    if processo in dispensa:
+        return "dispensa"
+    if processo in concorrencia:
+        return "concorrencia"
+    if processo in inexigibilidade:
+        return "inexigibilidade"
+    if processo in tomada_de_preco:
+        return "tomada de preco"
+    return procecimento

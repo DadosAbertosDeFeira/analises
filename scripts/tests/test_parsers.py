@@ -1,5 +1,5 @@
 import pytest
-from scripts.parsers import currency_to_float, limpa_proc_licitatorio
+from scripts.parsers import currency_to_float, limpa_processo_licitatorio
 
 
 @pytest.mark.parametrize(
@@ -18,7 +18,7 @@ def test_currency_to_float(original_value, expected_value):
 
 
 @pytest.mark.parametrize(
-    "proc_licitatorio_sujo,proc_licitatorio_limpo",
+    "processo_licitatorio,processo_licitatorio_esperado",
     [
         ("ISENTO", "isento"),
         ("ENTO", "isento"),
@@ -51,5 +51,10 @@ def test_currency_to_float(original_value, expected_value):
         ("omada de preco", "tomada de preco"),
     ],
 )
-def test_limpa_proc_licitatorio(proc_licitatorio_sujo, proc_licitatorio_limpo):
-    assert limpa_proc_licitatorio(proc_licitatorio_sujo) == proc_licitatorio_limpo
+def test_limpa_processo_licitatorio(
+    processo_licitatorio, processo_licitatorio_esperado
+):
+    assert (
+        limpa_processo_licitatorio(processo_licitatorio)
+        == processo_licitatorio_esperado
+    )
