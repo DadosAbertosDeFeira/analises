@@ -79,7 +79,7 @@ revisões.
 * Use o tempo presente nas mensagens do _commit_. Exemplo: _"Adiciona funcionalidade"_
 e não _"Adicionada a funcionalidade"_.
 
-* Atualize o [README.md](https://github.com/DadosAbertosDeFeira/analises/blob/master/README.md)
+* Atualize o [README.md](https://github.com/DadosAbertosDeFeira/analises/blob/main/README.md)
 com os detalhes da mudança caso esta inclua uma nova base de dados ou um novo comando na CLI.
 
 * Embora o código esteja escrito em inglês, por convenção, as mensagens de _commit_,
