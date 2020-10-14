@@ -51,4 +51,4 @@ pytest
 ```
 
 Toda a comunicação e demais interações do Dados Abertos de Feira estão sujeitas
-ao nosso [Código de Conduta](https://github.com/DadosAbertosDeFeira/maria-quiteria/blob/master/CODE_OF_CONDUCT.md).
+ao nosso [Código de Conduta](https://github.com/DadosAbertosDeFeira/maria-quiteria/blob/main/CODE_OF_CONDUCT.md).
