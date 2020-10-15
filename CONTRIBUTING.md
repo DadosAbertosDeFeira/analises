@@ -3,8 +3,10 @@
 Ficamos muito felizes que você está lendo este guia de contribuição, sempre precisamos
 de pessoas voluntárias que acreditem na ideia e queiram contribuir com o projeto.
 
-Se você ainda não fez isso, junte-se também a nós no [nosso grupo aberto do Telegram](https://t.me/joinchat/DRT0JBcy-RUk2GJZCnH3Fg)
+Se você ainda não fez isso, junte-se também a nós nos nossos grupos abertos [do Telegram](https://t.me/joinchat/DRT0JBcy-RUk2GJZCnH3Fg) ou [do Discord](https://discord.gg/F9RgD8k)
 e participe das discussões. Não hesite em nos procurar para tirar todas as suas dúvidas.
+
+[![Convite Discord](https://invidget.switchblade.xyz/F9RgD8k?language=pt)](https://discord.gg/F9RgD8k)
 
 ## Antes de começar
 
@@ -12,6 +14,7 @@ Aqui estão alguns recursos importantes que você deve estar ciente antes de com
 
 - [Manual de dados abertos para desenvolvedores](https://www.w3c.br/pub/Materiais/PublicacoesW3C/manual_dados_abertos_desenvolvedores_web.pdf)
 te explicará um pouco sobre o que são e os principais conceitos por trás dos dados abertos.
+- [Materiais de Estudo](https://github.com/DadosAbertosDeFeira/analises/wiki/Materiais-para-estudo) materiais de estudo sobre orçamento público e controle social.
 
 ## Reportando bugs
 
@@ -76,7 +79,7 @@ revisões.
 * Use o tempo presente nas mensagens do _commit_. Exemplo: _"Adiciona funcionalidade"_
 e não _"Adicionada a funcionalidade"_.
 
-* Atualize o [README.md](https://github.com/DadosAbertosDeFeira/analises/blob/master/README.md)
+* Atualize o [README.md](https://github.com/DadosAbertosDeFeira/analises/blob/main/README.md)
 com os detalhes da mudança caso esta inclua uma nova base de dados ou um novo comando na CLI.
 
 * Embora o código esteja escrito em inglês, por convenção, as mensagens de _commit_,
