@@ -37,7 +37,7 @@ das dependências e prevenção de possíveis conflitos com dependências de out
 Após inicializar seu _virtual environment_, configure o projeto. Para isto, execute, na pasta do projeto, o seguinte comando:
 
 ```
-python setup.py install
+python setup.py develop
 ```
 
 ### Dependências
