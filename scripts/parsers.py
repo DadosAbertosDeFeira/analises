@@ -7,10 +7,10 @@ def currency_to_float(value):
         return
 
 
-def limpa_processo_licitatorio(procecimento: str):
-    """Corrige typos no campo PROCESSO LICITATORIO no dataset de pagamentos
+def clean_bidding_process(bidding_process: str):
+    """Corrige typos no campo processo LICITATORIO no dataset de pagamentos
     Retorna o tipo do processo licitatorio em minúsculo"""
-    if not isinstance(procecimento, str):
+    if not isinstance(bidding_process, str):
         return
 
     isento = ["isento", "ento", "sento"]
@@ -26,18 +26,18 @@ def limpa_processo_licitatorio(procecimento: str):
     ]
     tomada_de_preco = ["tomada de preco", "omada de preco"]
 
-    processo = procecimento.lower()
+    process = bidding_process.lower()
 
-    if processo in isento:
+    if process in isento:
         return "isento"
-    if processo in pregao:
+    if process in pregao:
         return "pregao"
-    if processo in dispensa:
+    if process in dispensa:
         return "dispensa"
-    if processo in concorrencia:
+    if process in concorrencia:
         return "concorrencia"
-    if processo in inexigibilidade:
+    if process in inexigibilidade:
         return "inexigibilidade"
-    if processo in tomada_de_preco:
+    if process in tomada_de_preco:
         return "tomada de preco"
-    return procecimento
+    return process
