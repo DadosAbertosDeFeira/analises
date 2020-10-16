@@ -34,6 +34,12 @@ Contribuições são muito bem-vindas. Veja como contribuir no nosso [Guia de Co
 Utilizamos a versão 3.8 do Python. Recomendamos fortemente o uso de _virtual environments_ para isolamento
 das dependências e prevenção de possíveis conflitos com dependências de outros projetos.
 
+Ao inicializar seu _virtual environment_, configure o projeto. Para isto, execute, na pasta do projeto, o seguinte comando:
+
+```
+python setup.py install
+```
+
 ### Dependências
 
 Para instalar as dependências, execute:
