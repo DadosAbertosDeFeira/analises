@@ -23,6 +23,8 @@ def clean_text(text, remove_accents=False, return_string=True) -> str or list:
     text = " ".join(re.findall(r"\b[A-Za-zÀ-ú]+[-A-Za-zÀ-ú]*", text))
 
     # Remove accents
+    # TODO: Apparently this doesn't remove accents like "á", é" and so on.
+    # Maybe it would be a good idea to remove those as well
     if remove_accents:
         nfkd_form = unicodedata.normalize("NFKD", text)
         text = "".join([char for char in nfkd_form if not unicodedata.combining(char)])
