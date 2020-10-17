@@ -1,5 +1,5 @@
-from scripts.parsers import currency_to_float, limpa_texto
 import pytest
+from scripts.parsers import clean_text, currency_to_float
 
 
 @pytest.mark.parametrize(
@@ -18,7 +18,7 @@ def test_currency_to_float(original_value, expected_value):
 
 
 @pytest.mark.parametrize(
-    "texto,texto_limpo",
+    "text,cleaned_text",
     [
         ("Guarda-chuva", "guarda-chuva"),
         ("123abraço", "NUM abraço"),
@@ -29,8 +29,8 @@ def test_currency_to_float(original_value, expected_value):
         ("Pé-De-Moleque", "pé-de-moleque"),
         ("________", ""),
         ("anexo______", "anexo"),
-        ("neuro-", "neuro-")
+        ("neuro-", "neuro-"),
     ],
 )
-def test_limpa_texto(texto, texto_limpo):
-    assert limpa_texto(texto) == texto_limpo
+def test_clean_text(text, cleaned_text):
+    assert clean_text(text) == cleaned_text
