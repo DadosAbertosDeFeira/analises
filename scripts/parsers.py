@@ -1,4 +1,5 @@
 import re
+from pathlib import Path
 
 import xlrd
 
@@ -36,11 +37,12 @@ def all_expenses_nature_from_tcmba(year=None):
     das informações, os arquivos foram commitados na pasta ``data`` desse
     repositório.
     """
+    dir = Path(__file__).parent.parent / "data"
     files = {
-        2018: "data/tabespecificacaodespesa2018.xls",
-        2019: "data/tabespecificacaodespesa2019.xls",
-        2020: "data/tabespecificacaodespesa2020.xls",
-        2021: "data/tabespecificacaodespesa2021.xls",
+        2018: f"{dir}/tabespecificacaodespesa2018.xls",
+        2019: f"{dir}/tabespecificacaodespesa2019.xls",
+        2020: f"{dir}/tabespecificacaodespesa2020.xls",
+        2021: f"{dir}/tabespecificacaodespesa2021.xls",
     }
     if not year:
         year = max(files.keys())
