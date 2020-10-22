@@ -1,5 +1,6 @@
 import pytest
 from scripts.parsers import (
+    all_expenses_nature_from_tcmba,
     currency_to_float,
     extract_nature,
     identify_code_and_description,
@@ -136,3 +137,55 @@ def test_identify_code_and_description(row, expected_description):
 )
 def test_extract_nature(nature_str, expected_nature):
     assert extract_nature(nature_str) == expected_nature
+
+
+@pytest.mark.parametrize(
+    "year,nature,expected_size,expected_data",
+    [
+        (
+            None,
+            "30000000",
+            2484,
+            {
+                "code": "30000000",
+                "description": "Despesas Correntes",
+                "superior_group_code": None,
+            },
+        ),
+        (
+            2020,
+            "99999999",
+            2484,
+            {
+                "code": "99999999",
+                "description": "Reserva de Contingência",
+                "superior_group_code": "99999900",
+            },
+        ),
+        (
+            2019,
+            "99999999",
+            2484,
+            {
+                "code": "99999999",
+                "description": "Reserva de Contingência",
+                "superior_group_code": "99999900",
+            },
+        ),
+        (
+            2018,
+            "99999999",
+            2175,
+            {
+                "code": "99999999",
+                "description": "Reserva de Contingência",
+                "superior_group_code": "99999900",
+            },
+        ),
+    ],
+)
+def test_all_expenses_nature_from_tcmba(year, nature, expected_size, expected_data):
+    expenses_nature = all_expenses_nature_from_tcmba(year)
+
+    assert len(expenses_nature) == expected_size
+    assert expenses_nature.get(nature) == expected_data
