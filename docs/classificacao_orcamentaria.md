@@ -20,12 +20,12 @@ Exemplos:
 | 31301100 | Vencimentos e Vantagens Fixas - Pessoal Civil                | 31300000        |
 | 31301101 | Vencimento e vantagens fixas Pessoal Civil (Vencimento Básico) | 31301100        |
 
-O oficial arquivo da natureza das despesas pode ser encontrada [aqui](https://www.tcm.ba.gov.br/contabilidade-municipal/)
-ou na pasta `data` deste repositório. Se você quiser fazer alguma análise
-que envolve a natureza das despesas pode utilizar dois métodos:
+Na pasta `data` deste repositório já temos todos os arquivos. Se você quiser fazer
+alguma análise que envolve a natureza das despesas pode utilizar métodos que criamos
+para facilitar a limpeza dos dados e enriquecimento das suas análises. São eles:
 
 ```python
-from scripts import all_expenses_nature_from_tcmba, extract_nature
+from scripts.parsers import all_expenses_nature_from_tcmba, extract_nature
 
 
 # para identificar um possível código de natureza da despesa
