@@ -39,7 +39,8 @@ def test_currency_to_float(original_value, expected_value):
             {
                 "value": "3",
                 "group": "CO",
-                "code": "3.0.00.00.00",
+                "code_with_mask": "3.0.00.00.00",
+                "code": "30000000",
                 "description": "Despesas Correntes",
             },
         ),
@@ -57,7 +58,8 @@ def test_currency_to_float(original_value, expected_value):
             {
                 "value": "1",
                 "group": "GD",
-                "code": "3.1.00.00.00",
+                "code_with_mask": "3.1.00.00.00",
+                "code": "31000000",
                 "description": "Pessoal e Encargos Sociais",
             },
         ),
@@ -75,7 +77,8 @@ def test_currency_to_float(original_value, expected_value):
             {
                 "value": "71",
                 "group": "MA",
-                "code": "3.1.71.00.00",
+                "code_with_mask": "3.1.71.00.00",
+                "code": "31710000",
                 "description": "Transferências a Consórcios Públicos "
                 "Mediante Contrato de Rateio",
             },
@@ -94,7 +97,8 @@ def test_currency_to_float(original_value, expected_value):
             {
                 "value": "70",
                 "group": "ED",
-                "code": "3.1.71.70.00",
+                "code_with_mask": "3.1.71.70.00",
+                "code": "31717000",
                 "description": "Rateio pela Participação em Consórcio Público",
             },
         ),
@@ -112,7 +116,8 @@ def test_currency_to_float(original_value, expected_value):
             {
                 "value": "01",
                 "group": "SED",
-                "code": "3.1.90.01.01",
+                "code_with_mask": "3.1.90.01.01",
+                "code": "31900101",
                 "description": "Aposentadorias Custeadas com Recursos do RPPS",
             },
         ),

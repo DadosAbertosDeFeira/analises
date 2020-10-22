@@ -106,7 +106,11 @@ def identify_code_and_description(row):
     elif not row or len(row) < 8:
         return
 
-    code_and_description = {"code": row[5], "description": row[7]}
+    code_and_description = {
+        "code_with_mask": row[5],
+        "code": row[5].replace(".", ""),
+        "description": row[7],
+    }
 
     is_gd_empty = row[1] == "0"
     is_ma_empty = row[2] == "00"
