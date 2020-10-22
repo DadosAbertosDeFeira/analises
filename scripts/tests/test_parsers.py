@@ -3,7 +3,6 @@ from scripts.parsers import (
     all_expenses_nature_from_tcmba,
     currency_to_float,
     extract_nature,
-    identify_code_and_description,
 )
 
 
@@ -20,114 +19,6 @@ from scripts.parsers import (
 )
 def test_currency_to_float(original_value, expected_value):
     assert currency_to_float(original_value) == expected_value
-
-
-@pytest.mark.parametrize(
-    "row,expected_description",
-    [
-        (
-            [
-                "3",
-                "0",
-                "00",
-                "00",
-                "00",
-                "3.0.00.00.00",
-                "3.0.00.00.00",
-                "Despesas Correntes",
-            ],
-            {
-                "value": "3",
-                "group": "CO",
-                "code_with_mask": "3.0.00.00.00",
-                "code": "30000000",
-                "description": "Despesas Correntes",
-            },
-        ),
-        (
-            [
-                "3",
-                "1",
-                "00",
-                "00",
-                "00",
-                "3.1.00.00.00",
-                "3.0.00.00.00",
-                "Pessoal e Encargos Sociais",
-            ],
-            {
-                "value": "1",
-                "group": "GD",
-                "code_with_mask": "3.1.00.00.00",
-                "code": "31000000",
-                "description": "Pessoal e Encargos Sociais",
-            },
-        ),
-        (
-            [
-                "3",
-                "1",
-                "71",
-                "00",
-                "00",
-                "3.1.71.00.00",
-                "3.0.00.00.00",
-                "Transferências a Consórcios Públicos Mediante Contrato de Rateio",
-            ],
-            {
-                "value": "71",
-                "group": "MA",
-                "code_with_mask": "3.1.71.00.00",
-                "code": "31710000",
-                "description": "Transferências a Consórcios Públicos "
-                "Mediante Contrato de Rateio",
-            },
-        ),
-        (
-            [
-                "3",
-                "1",
-                "71",
-                "70",
-                "00",
-                "3.1.71.70.00",
-                "3.0.00.00.00",
-                "Rateio pela Participação em Consórcio Público",
-            ],
-            {
-                "value": "70",
-                "group": "ED",
-                "code_with_mask": "3.1.71.70.00",
-                "code": "31717000",
-                "description": "Rateio pela Participação em Consórcio Público",
-            },
-        ),
-        (
-            [
-                "3",
-                "1",
-                "90",
-                "01",
-                "01",
-                "3.1.90.01.01",
-                "3.0.00.00.00",
-                "Aposentadorias Custeadas com Recursos do RPPS",
-            ],
-            {
-                "value": "01",
-                "group": "SED",
-                "code_with_mask": "3.1.90.01.01",
-                "code": "31900101",
-                "description": "Aposentadorias Custeadas com Recursos do RPPS",
-            },
-        ),
-        ([], None),
-        (None, None),
-        (["3", "1", "90"], None),
-    ],
-)
-def test_identify_code_and_description(row, expected_description):
-    assert identify_code_and_description(row) == expected_description
 
 
 @pytest.mark.parametrize(
