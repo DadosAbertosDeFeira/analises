@@ -14,28 +14,48 @@ def currency_to_float(value):
         return
 
 
-def clean_text(text, remove_accents=False, return_string=True) -> str or list:
-    if isinstance(type(text), float):
+def remove_ponctuation(text):
+    """
+    Remove pontuação, dígitos e espaços em branco
+    """
+
+    if not isinstance(text, str):
         return ""
 
-    # Remove ponctuation, digits and whitespaces
     text = re.sub(r"[0-9]+", " NUM ", text.lower())
-    text = " ".join(re.findall(r"\b[A-Za-zÀ-ú]+[-A-Za-zÀ-ú]*", text))
+    return " ".join(re.findall(r"\b[A-Za-zÀ-ú]+[-A-Za-zÀ-ú]*", text))
 
+
+def remove_accents(text):
+    """
     # Remove accents
     # TODO: Apparently this doesn't remove accents like "á", é" and so on.
     # Maybe it would be a good idea to remove those as well
-    if remove_accents:
-        nfkd_form = unicodedata.normalize("NFKD", text)
-        text = "".join([char for char in nfkd_form if not unicodedata.combining(char)])
+    """
 
-    # Remove stopwords
+    if not isinstance(text, str):
+        return ""
+
+    nfkd_form = unicodedata.normalize("NFKD", text)
+    return "".join([char for char in nfkd_form if not unicodedata.combining(char)])
+
+
+def remove_stopwords(text):
+    if not isinstance(text, str):
+        return ""
+
     nltk_stopwords = stopwords.words("portuguese")
     all_stopwords = nltk_stopwords + CUSTOM_STOPWORDS
 
     text = [word for word in text.split() if word not in all_stopwords]
+    return " ".join(text)
 
-    if return_string:
-        return " ".join(text)
-    else:
-        return text
+
+def clean_text(text, remove_accents=False) -> str:
+    if not isinstance(text, str):
+        return ""
+
+    text = remove_ponctuation(text)
+    if remove_accents:
+        text = remove_accents(text)
+    return remove_stopwords(text)
