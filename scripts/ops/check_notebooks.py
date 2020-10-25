@@ -31,7 +31,6 @@ proper_naming = "x" if has_proper_naming else " "
 clean_outputs = "x" if has_clean_outputs else " "
 
 checklist = f"""
-```
 Esse checklist vai te ajudar a saber quando o seu notebook está pronto:
 
 - [{clean_outputs}] Os _outputs_ dos _notebooks_ estão limpos
@@ -41,7 +40,6 @@ Esse checklist vai te ajudar a saber quando o seu notebook está pronto:
 Se tiver dúvidas, veja o nosso [guia de contribuição](https://github.com/DadosAbertosDeFeira/analises/blob/main/CONTRIBUTING.md).
 Certifique-se que os testes estão passando e que o seu código
 está de acordo com as regras de qualidade.
-```
 """  # noqa
 
 print(checklist)

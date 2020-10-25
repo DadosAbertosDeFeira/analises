@@ -17,7 +17,6 @@ jobs:
           pip install -r requirements.txt
       - name: 'Check Jupyter Notebooks'
         id: checklist
-        if: github.event_name == 'pull_request'
         run: |
           OUTPUT=$(python scripts/ops/check_notebooks.py)
           echo "::set-output name=result::$OUTPUT"
@@ -25,7 +24,6 @@ jobs:
         uses: marocchino/sticky-pull-request-comment@v1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          header: check-notebooks
           message: |
             Obrigada pela sua contribuição! 🎉
             ${{ steps.checklist.outputs.result }}
