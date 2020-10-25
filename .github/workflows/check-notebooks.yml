@@ -23,7 +23,6 @@ jobs:
         id: checklist
         run: |
           OUTPUT=$(python scripts/ops/check_notebooks.py)
-          OUTPUT="${OUTPUT//'%'/'%25'}​【7,6 m】"
           OUTPUT="${OUTPUT//$'\n'/'%0A'}"
           OUTPUT="${OUTPUT//$'\r'/'%0D'}"
           echo "::set-output name=result::$OUTPUT"
@@ -33,7 +32,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           number: ${{ steps.finder.outputs.pr }}
           message: |
-            Obrigada pela sua contribuição! 🎉
-            ```
-            ${{ steps.checklist.outputs.result }}
-            ```
+            Obrigada pela sua contribuição! 🎉 ${{ steps.checklist.outputs.result }}
