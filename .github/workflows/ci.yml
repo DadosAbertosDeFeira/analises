@@ -1,4 +1,4 @@
-name: CI
+name: Verifica estilos e roda testes
 
 on: [ push, pull_request ]
 

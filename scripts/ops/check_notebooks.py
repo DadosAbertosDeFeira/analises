@@ -15,10 +15,10 @@ has_clean_outputs = True
 naming = []
 
 for notebook in notebooks:
-    # check naming
+    # checa padrão de nomes
     naming.extend([True if re.search(NAMING_PATTERN, notebook) else False])
 
-    # check outputs
+    # checa se os outputs estão limpos
     notebook = json.load(open(notebook))
     for cell in notebook["cells"]:
         if cell.get("outputs", None):
