@@ -23,6 +23,7 @@ jobs:
           echo "::set-output name=result::$OUTPUT"
       - name: Notebook checklist
         uses: marocchino/sticky-pull-request-comment@v1
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        header: check-notebooks
-        message: ${{ steps.check-notebooks.outputs.result }}
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          header: check-notebooks
+          message: ${{ steps.check-notebooks.outputs.result }}
