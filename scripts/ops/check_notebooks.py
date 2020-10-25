@@ -32,8 +32,6 @@ clean_outputs = "x" if has_clean_outputs else " "
 
 checklist = f"""
 ```
-Obrigada pela sua contribuição! 🎉
-
 Esse checklist vai te ajudar a saber quando o seu notebook está pronto:
 
 - [{clean_outputs}] Os _outputs_ dos _notebooks_ estão limpos
