@@ -93,6 +93,7 @@ laws["texto_limpo"] = laws["texto"].apply(clean_text)
 # In[ ]:
 
 
+# Gera matriz de documentos
 vectorizer = CountVectorizer()
 tf_representation = vectorizer.fit_transform(laws["texto_limpo"])
 tf_representation
@@ -175,7 +176,7 @@ tfidf_representation
 most_similar_law_idx = cos_sim_tfidf_sorted_idxs[original_law_index, -2]
 tfidf_similarity = cos_sim_tfidf[original_law_index, most_similar_law_idx]
 
-print(f"Dada a mesma lei anterior, " "similaridade com TF-IDF é: {tfidf_similarity}")
+print("Dada a mesma lei anterior, " f"similaridade com TF-IDF é: {tfidf_similarity}")
 print_laws(original_law_index, most_similar_law_idx)
 
 
@@ -215,7 +216,7 @@ print(drafted_laws)
 
 
 for i in drafted_laws:
-    print(f"\n\nCOMPARACAO UTILIZANDO TF:\n\n")
+    print("\n\nCOMPARACAO UTILIZANDO TF:\n\n")
     print_laws(i, most_similar_indexes_tf[i])
     print("\n\nCOMPARACAO UTILIZANDO TF-IDF:\n\n")
     print_laws(i, most_similar_indexes_tfidf[i])
@@ -417,6 +418,7 @@ word_embedding_matrix
 # In[ ]:
 
 
+# Transform to sparse, to avoid memory consumption
 word_embedding_matrix = csr_matrix(word_embedding_matrix)
 word_embedding_matrix
 
@@ -561,7 +563,7 @@ print(
 drafted_laws_index = np.random.randint(len(different_result_from_tfidf), size=10)
 for i in drafted_laws_index:
     if different_result_from_tfidf[i]:
-        print(f"\n\nVETOR DE PALAVRAS:\n\n")
+        print("\n\nVETOR DE PALAVRAS:\n\n")
         print_laws(i, most_similar_indexes_word_embedding[i])
         print("\n\nTF-IDF:\n\n")
         print_laws(i, most_similar_indexes_tfidf[i])
