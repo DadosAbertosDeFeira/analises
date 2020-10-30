@@ -21,8 +21,8 @@ def test_currency_to_float(original_value, expected_value):
     "text,cleaned_text",
     [
         ("Guarda-chuva", "guarda-chuva"),
-        ("123abraço", "NUM abraço"),
-        ("123oliveira4", "NUM oliveira NUM"),
+        ("123abraço", "abraço"),
+        ("123oliveira4", "oliveira"),
         ("Onde.Vai", "onde vai"),
         ("AteNÇÃo", "atenção"),
         ("Qualquer uma destas xx casas", "casas"),
@@ -32,6 +32,7 @@ def test_currency_to_float(original_value, expected_value):
         ("neuro-", "neuro-"),
         ("Único", "único"),
         ("Resolução:", "resolução"),
+        ("Frase longa avatar aang.", "frase longa avatar aang"),
     ],
 )
 def test_clean_text(text, cleaned_text):

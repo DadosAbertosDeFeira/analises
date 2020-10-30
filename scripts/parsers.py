@@ -1,6 +1,7 @@
 import re
 import unicodedata
 
+import nltk
 from nltk.corpus import stopwords
 from scripts.stopwords import CUSTOM_STOPWORDS
 
@@ -22,8 +23,7 @@ def remove_ponctuation(text):
     if not isinstance(text, str):
         return ""
 
-    text = re.sub(r"[0-9]+", " NUM ", text.lower())
-    return " ".join(re.findall(r"\b[A-Za-zÀ-ú]+[-A-Za-zÀ-ú]*", text))
+    return " ".join(re.findall(r"[A-Za-zÀ-ú]+[-A-Za-zÀ-ú]*", text))
 
 
 def remove_accents(text):
@@ -44,6 +44,7 @@ def remove_stopwords(text):
     if not isinstance(text, str):
         return ""
 
+    nltk.download("stopwords")
     nltk_stopwords = stopwords.words("portuguese")
     all_stopwords = nltk_stopwords + CUSTOM_STOPWORDS
 
@@ -51,11 +52,11 @@ def remove_stopwords(text):
     return " ".join(text)
 
 
-def clean_text(text, remove_accents=False) -> str:
+def clean_text(text, remove_accents=False):
     if not isinstance(text, str):
         return ""
 
-    text = remove_ponctuation(text)
+    text = remove_ponctuation(text.lower())
     if remove_accents:
         text = remove_accents(text)
     return remove_stopwords(text)
