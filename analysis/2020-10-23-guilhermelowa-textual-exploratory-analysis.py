@@ -30,7 +30,8 @@
 # (https://medium.com/turing-talks/introdu%C3%A7%C3%A3o-ao-processamento-de-linguagem-natural-com-baco-exu-do-blues-17cbb7404258)
 # - [Explore 175 Years of Words in Scientific American]
 # (https://www.scientificamerican.com/article/explore-175-years-of-words-in-scientific-american/)
-# e [How to Turn 175 Years of Words in Scientific American into an Image]
+# e
+# [How to Turn 175 Years of Words in Scientific American into an Image]
 # (https://www.scientificamerican.com/article/how-to-turn-175-years-of-words-in-scientific-american-into-an-image/)
 # - [Tutorial de visualização de informações textuais]
 # (https://infovis.fh-potsdam.de/tutorials/infovis5text.html)
@@ -42,10 +43,10 @@
 # ## Pré-requisitos
 #
 # Para rodar este notebook,
-# você precisa de um corpus de texto.
+# você precisa de um conjunto de textos (corpus).
 #
-# Atualmente usamos o corpus das Leis Municipais.
-# Este corpus está presente no arquivo leis.json,
+# Atualmente usamos o corpus das Leis Municipais,
+# presente no arquivo `leis.json`,
 # disponível [no Kaggle]
 # (https://www.kaggle.com/anapaulagomes/leis-do-municpio-de-feira-de-santana/).
 
@@ -101,19 +102,28 @@ nltk.download("stopwords")
 # In[ ]:
 
 
-def clean_text(text, remove_accents=False):
-    if isinstance(text, float):
-        return ""
+def remove_accents(text, str):
+    nfkd_form = unicodedata.normalize("NFKD", text)
+    return "".join([char for char in nfkd_form if not unicodedata.combining(char)])
 
-    # Remove ponctuation, digits and whitespaces  # TODO documentação em pt-br
+
+def clean_text(text, rm_accents=False):
+    if not isinstance(text, str):
+        raise ValueError("Argumento recebido não é uma string")
+
+    # Remove pontuação, dígitos e espaços em branco
     text = " ".join(re.findall(r"[A-Za-zÀ-ú]+[-A-Za-zÀ-ú]*", text.lower()))
 
-    # Remove accents
-    if remove_accents:
-        nfkd_form = unicodedata.normalize("NFKD", text)
-        text = "".join([char for char in nfkd_form if not unicodedata.combining(char)])
+    if rm_accents:
+        text = remove_accents(text)
 
     # Remove stopwords
+    # Essas palavras abaixo são muito comuns nos textos das leis
+    # (aparecem em quase todos os textos)
+    # ou não possuem valor descritivo do que diz o texto.
+    # Em ambos os casos, não possuem informação sobre o que trata
+    # o texto, que é o que a gente quer visualizar com a
+    # frequencia das palavras do texto.
     nltk_stopwords = stopwords.words("portuguese")
     custom_stopwords = [
         "feira",
@@ -172,6 +182,8 @@ def clean_text(text, remove_accents=False):
         "meio",
         "m",
         "c",
+        "d",
+        "n",
         "correrão",
     ]
     all_stopwords = nltk_stopwords + custom_stopwords
@@ -186,7 +198,7 @@ text = " ".join(city_laws["texto"].tolist())
 text = clean_text(text)
 
 unique_words_count = len(set(text))
-print(f"Numero de palavras unicas no text: {unique_words_count}")
+print(f"Número de palavras únicas no texto: {unique_words_count}")
 
 
 # In[ ]:
@@ -194,4 +206,4 @@ print(f"Numero de palavras unicas no text: {unique_words_count}")
 
 plt.figure(figsize=(20, 10))
 fd = FreqDist(text)
-fd.plot(30, title="Palavras x Frequência", cumulative=False)
+fd.plot(30, title="Palavras x Frequência", figsize=(20, 10), cumulative=False)
