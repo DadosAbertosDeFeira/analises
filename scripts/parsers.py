@@ -75,3 +75,30 @@ def all_expenses_nature_from_tcmba(year=None):
                 "superior_group_code": superior_group_code,
             }
     return natures
+
+
+def is_company(text):
+    """Identifica se um valor é um CNPJ ou não.
+
+    Retorna True para um CNPJ, False para um CPF
+    e None para não identificável.
+    """
+    # checa valores sem máscara
+    text = str(text)
+    if len(text) == 14 and text.isdigit():
+        return True
+    if len(text) == 11 and text.isdigit():
+        return False
+
+    # checa valores com máscara
+    if len(text) == 18:
+        cnpj_pattern = r"\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}"
+        result = re.search(cnpj_pattern, text)
+        if result:
+            return True
+    elif len(text) == 14:
+        cpf_pattern = r"\d{3}\.\d{3}\.\d{3}\-\d{2}"
+        result = re.search(cpf_pattern, text)
+        if result:
+            return False
+    return

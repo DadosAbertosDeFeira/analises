@@ -4,6 +4,7 @@ from scripts.parsers import (
     currency_to_float,
     extract_nature,
 )
+from scripts.parsers import currency_to_float, is_company
 
 
 @pytest.mark.parametrize(
@@ -85,3 +86,20 @@ def test_all_expenses_nature_from_tcmba(year, nature, expected_size, expected_da
 
     assert len(expenses_nature) == expected_size
     assert expenses_nature.get(nature) == expected_data
+
+
+@pytest.mark.parametrize(
+    "original_value,expected_value",
+    [
+        ("88888888888", False),
+        ("99999999999999", True),
+        ("888.888.888-88", False),
+        ("99.999.999/9999-99", True),
+        ("000", None),
+        (99999999999999, True),
+        (88888888888, False),
+        (123456, None),
+    ],
+)
+def test_is_company(original_value, expected_value):
+    assert is_company(original_value) == expected_value
