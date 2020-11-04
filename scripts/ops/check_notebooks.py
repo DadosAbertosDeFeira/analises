@@ -8,12 +8,13 @@ def read_files():
     current_dir = os.getcwd()
     notebooks = glob.glob(f"{current_dir}/analysis/*.ipynb")
     scripts = glob.glob(f"{current_dir}/analysis/*.py")
-    htmls = glob.glob(f"{current_dir}/analysis/*.html")
+    htmls = glob.glob(f"{current_dir}/docs/*.html")
     return notebooks, scripts, htmls
 
 
 def check(notebooks, scripts, htmls):
-    has_missing_files = len(notebooks) != len(scripts) or len(notebooks) != len(htmls)
+    missing_py_files = len(notebooks) != len(scripts)
+    missing_htmls = len(notebooks) != len(htmls)
     has_clean_outputs = True
     naming = []
 
@@ -30,11 +31,14 @@ def check(notebooks, scripts, htmls):
                 has_clean_outputs = False
 
     has_proper_naming = all(naming)
-    return has_missing_files, has_proper_naming, has_clean_outputs
+    return missing_py_files, missing_htmls, has_proper_naming, has_clean_outputs
 
 
-def build_message(has_missing_files, has_proper_naming, has_clean_outputs):
-    missing_files = " " if has_missing_files else "x"
+def build_message(
+    missing_py_files, missing_htmls, has_proper_naming, has_clean_outputs
+):
+    missing_py_files = " " if missing_py_files else "x"
+    missing_htmls = " " if missing_htmls else "x"
     proper_naming = "x" if has_proper_naming else " "
     clean_outputs = "x" if has_clean_outputs else " "
 
@@ -42,7 +46,8 @@ def build_message(has_missing_files, has_proper_naming, has_clean_outputs):
         "Esse checklist vai te ajudar a saber quando o seu notebook está pronto:\n"
         "\n"
         f"- [{clean_outputs}] Os _outputs_ dos _notebooks_ estão limpos\n"
-        f"- [{missing_files}] Os arquivos `.py` e `.html` foram criados\n"
+        f"- [{missing_py_files}] Os arquivos `.py` foram gerados na pasta `analysis`\n"
+        f"- [{missing_htmls}] Os `.html` foram gerados na pasta `docs/`\n"
         f"- [{proper_naming}] Os nomes dos _notebooks_ estão de acordo com o padrão\n"
         "\n"
         "Se tiver dúvidas, veja o nosso [guia de contribuição](https://github.com/DadosAbertosDeFeira/analises/blob/main/CONTRIBUTING.md).\n"  # noqa
@@ -53,7 +58,11 @@ def build_message(has_missing_files, has_proper_naming, has_clean_outputs):
 
 if __name__ == "__main__":
     notebooks, scripts, htmls = read_files()
-    has_missing_files, has_proper_naming, has_clean_outputs = check(
+    missing_py_files, missing_htmls, has_proper_naming, has_clean_outputs = check(
         notebooks, scripts, htmls
     )
-    print(build_message(has_missing_files, has_proper_naming, has_clean_outputs))
+    print(
+        build_message(
+            missing_py_files, missing_htmls, has_proper_naming, has_clean_outputs
+        )
+    )
