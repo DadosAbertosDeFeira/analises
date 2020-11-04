@@ -71,7 +71,25 @@ formatação, você será informado e o _commit_ só será permitido após corre
 como o _isort_ já fazem a correção automaticamente mas ainda é necessário _commitar_ novamente.
 Dessa forma mantemos o código mais arrumado.
 
-* Rode os testes localmente. Além de ser uma boa prática, previne idas e vindas nas
+* Ao criar um novo _notebook_ siga o padrão `YYYY-MM-DD-<github-user>-<titulo-da-analise>.ipynb`.
+
+* Gere um arquivo `.py` na pasta `analysis/` e `.html` na pasta `docs/` para o seu _notebook_.
+Assim, poderemos revisar o seu código de maneira mais fácil e também visualizar o resultado.
+Para gerar o arquivo `.py`, execute:
+
+```
+jupyter nbconvert --to script analysis/YYYY-MM-DD-<github-user>-<titulo-da-analise>.ipynb
+```
+
+Para gerar o arquivo `.html`, execute:
+
+```
+jupyter nbconvert --to html analysis/YYYY-MM-DD-<github-user>-<titulo-da-analise>.ipynb
+```
+
+Ambos podem ser gerados a partir da interface do Jupyter Notebook.
+
+* Rode os testes localmente com `pytest`. Além de ser uma boa prática, previne idas e vindas nas
 revisões.
 
 * Adicione novos testes para novas funcionalidades ou bugs.
