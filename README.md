@@ -1,9 +1,11 @@
 # Análises
 
-![CI](https://github.com/DadosAbertosDeFeira/analises/workflows/CI/badge.svg)
+![Verifica estilos e roda testes](https://github.com/DadosAbertosDeFeira/analises/workflows/Verifica%20estilos%20e%20roda%20testes/badge.svg)
 
 Repositório para abrigar as análises dos Dados Abertos de Feira.
 A coleta é feita pela [Maria Quitéria](https://github.com/DadosAbertosDeFeira/maria-quiteria).
+
+Você pode visualizar as nossas análises [aqui](https://dadosabertosdefeira.github.io/analises/).
 
 ## Dados
 
@@ -15,10 +17,13 @@ Frequentemente utilizamos dados exportados diretamente dos portais da transparê
 da [Câmara de Vereadores](https://www.transparencia.feiradesantana.ba.leg.br/)
 ou de outros sites como [Tribunal de Contas dos Municípios da Bahia (TCM-BA)](https://www.tcm.ba.gov.br/).
 
+Na nossa [Wiki](https://github.com/DadosAbertosDeFeira/analises/wiki) você pode
+entender melhor sobre os dados e limpeza deles.
+
 ## Estrutura
 
 * `analysis`: onde todos os jupyter notebooks devem estar
-* `docs`: documentos como manuais e dicionários de dados devem estar lá
+* `docs`: site para exibir os notebooks (Github Pages)
 * `scripts`: onde colocamos scripts Python que ajudam na coleta e preparação para análises
 * `publish`: arquivos prontos para serem publicados e divulgados
 * `templates`: notebooks-template com instruções para auxiliar na análise de dados

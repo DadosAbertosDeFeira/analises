@@ -1,4 +1,4 @@
-name: CI
+name: Verifica estilos e roda testes
 
 on: [ push, pull_request ]
 
@@ -15,9 +15,27 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+      - uses: jwalton/gh-find-current-pr@v1
+        id: finder
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: 'Check Jupyter Notebooks'
+        id: checklist
+        run: |
+          OUTPUT=$(python scripts/ops/check_notebooks.py)
+          OUTPUT="${OUTPUT//$'\n'/'%0A'}"
+          OUTPUT="${OUTPUT//$'\r'/'%0D'}"
+          echo "::set-output name=result::$OUTPUT"
+      - name: Notebook checklist
+        uses: marocchino/sticky-pull-request-comment@v1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          number: ${{ steps.finder.outputs.pr }}
+          message: |
+            Obrigada pela sua contribuição! 🎉 ${{ steps.checklist.outputs.result }}
       - name: Verifica estilos e boas práticas
         run: |
-          black --check .
-          flake8 .
+          black --check --exclude "analysis" .
+          flake8 --exclude analysis/ .
       - name: Executa os testes
         run: pytest

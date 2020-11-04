@@ -14,6 +14,7 @@ venv/
 *.zip
 *.xls
 *.xlsx
+!data/*.xls
 
 #arquivos de testes
 !**/tests/**/**.xls
