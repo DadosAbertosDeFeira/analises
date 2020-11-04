@@ -1,6 +1,6 @@
 # Análises
 
-![CI](https://github.com/DadosAbertosDeFeira/analises/workflows/CI/badge.svg)
+![Verifica estilos e roda testes](https://github.com/DadosAbertosDeFeira/analises/workflows/Verifica%20estilos%20e%20roda%20testes/badge.svg)
 
 Repositório para abrigar as análises dos Dados Abertos de Feira.
 A coleta é feita pela [Maria Quitéria](https://github.com/DadosAbertosDeFeira/maria-quiteria).
