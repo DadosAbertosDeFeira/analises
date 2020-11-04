@@ -21,6 +21,7 @@ ou de outros sites como [Tribunal de Contas dos Municípios da Bahia (TCM-BA)](h
 * `docs`: documentos como manuais e dicionários de dados devem estar lá
 * `scripts`: onde colocamos scripts Python que ajudam na coleta e preparação para análises
 * `publish`: arquivos prontos para serem publicados e divulgados
+* `templates`: notebooks-template com instruções para auxiliar na análise de dados
 
 Os dados não serão armazenados nesse repositório porém todos os passos
 para limpeza e análise devem ser reproduzidos a partir dos dados baixados.
