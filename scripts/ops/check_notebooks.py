@@ -8,7 +8,7 @@ def read_files():
     current_dir = os.getcwd()
     notebooks = glob.glob(f"{current_dir}/analysis/*.ipynb")
     scripts = glob.glob(f"{current_dir}/analysis/*.py")
-    htmls = glob.glob(f"{current_dir}/docs/*.html")
+    htmls = glob.glob(f"{current_dir}/docs/notebooks/*.html")
     return notebooks, scripts, htmls
 
 
@@ -47,12 +47,15 @@ def build_message(
         "\n"
         f"- [{clean_outputs}] Os _outputs_ dos _notebooks_ estão limpos\n"
         f"- [{missing_py_files}] Os arquivos `.py` foram gerados na pasta `analysis`\n"
-        f"- [{missing_htmls}] Os `.html` foram gerados na pasta `docs/`\n"
+        f"- [{missing_htmls}] Os `.html` foram gerados na pasta `docs/notebooks/`\n"
         f"- [{proper_naming}] Os nomes dos _notebooks_ estão de acordo com o padrão\n"
         "\n"
         "Se tiver dúvidas, veja o nosso [guia de contribuição](https://github.com/DadosAbertosDeFeira/analises/blob/main/CONTRIBUTING.md).\n"  # noqa
         "Certifique-se que os testes estão passando e que o seu código "
         "está de acordo com as regras de qualidade."
+        "\n"
+        "Para que a sua análise seja mostrada em nosso site, edite o arquivo"
+        "`docs/index.html`."
     )
 
 

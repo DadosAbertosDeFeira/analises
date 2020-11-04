@@ -73,7 +73,7 @@ Dessa forma mantemos o código mais arrumado.
 
 * Ao criar um novo _notebook_ siga o padrão `YYYY-MM-DD-<github-user>-<titulo-da-analise>.ipynb`.
 
-* Gere um arquivo `.py` na pasta `analysis/` e `.html` na pasta `docs/` para o seu _notebook_.
+* Gere um arquivo `.py` na pasta `analysis/` e `.html` na pasta `docs/notebooks/` a partir do seu _notebook_.
 Assim, poderemos revisar o seu código de maneira mais fácil e também visualizar o resultado.
 Para gerar o arquivo `.py`, execute:
 
