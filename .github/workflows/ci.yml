@@ -35,7 +35,7 @@ jobs:
             Obrigada pela sua contribuição! 🎉 ${{ steps.checklist.outputs.result }}
       - name: Verifica estilos e boas práticas
         run: |
-          black --check .
-          flake8 .
+          black --check --exclude "analysis" .
+          flake8 --exclude analysis/ .
       - name: Executa os testes
         run: pytest
