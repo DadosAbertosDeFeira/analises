@@ -53,6 +53,9 @@ def build_message(
         "Se tiver dúvidas, veja o nosso [guia de contribuição](https://github.com/DadosAbertosDeFeira/analises/blob/main/CONTRIBUTING.md).\n"  # noqa
         "Certifique-se que os testes estão passando e que o seu código "
         "está de acordo com as regras de qualidade."
+        "\n"
+        "Para que a sua análise seja mostrada em nosso site, edite o arquivo"
+        "`docs/index.html`."
     )
 
 
