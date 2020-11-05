@@ -26,19 +26,13 @@
 #
 # ### Algumas referências para ideias e melhorias:
 #
-# - [Como criar nuvem de palavras]
-# (https://medium.com/turing-talks/introdu%C3%A7%C3%A3o-ao-processamento-de-linguagem-natural-com-baco-exu-do-blues-17cbb7404258)
-# - [Explore 175 Years of Words in Scientific American]
-# (https://www.scientificamerican.com/article/explore-175-years-of-words-in-scientific-american/)
+# - [Como criar nuvem de palavras](https://medium.com/turing-talks/introdu%C3%A7%C3%A3o-ao-processamento-de-linguagem-natural-com-baco-exu-do-blues-17cbb7404258)  # noqa
+# - [Explore 175 Years of Words in Scientific American](https://www.scientificamerican.com/article/explore-175-years-of-words-in-scientific-american/)  # noqa
 # e
-# [How to Turn 175 Years of Words in Scientific American into an Image]
-# (https://www.scientificamerican.com/article/how-to-turn-175-years-of-words-in-scientific-american-into-an-image/)
-# - [Tutorial de visualização de informações textuais]
-# (https://infovis.fh-potsdam.de/tutorials/infovis5text.html)
-# - [Tutorial de análise exploratória de texto]
-# (https://towardsdatascience.com/a-complete-exploratory-data-analysis-and-visualization-for-text-data-29fb1b96fb6a)
-# - [Análise dos tweets do congresso americano]
-# (https://congress.pudding.cool/)
+# [How to Turn 175 Years of Words in Scientific American into an Image](https://www.scientificamerican.com/article/how-to-turn-175-years-of-words-in-scientific-american-into-an-image/)   # noqa
+# - [Tutorial de visualização de informações textuais](https://infovis.fh-potsdam.de/tutorials/infovis5text.html)  # noqa
+# - [Tutorial de análise exploratória de texto](https://towardsdatascience.com/a-complete-exploratory-data-analysis-and-visualization-for-text-data-29fb1b96fb6a)   # noqa
+# - [Análise dos tweets do congresso americano](https://congress.pudding.cool/)   # noqa
 
 # ## Pré-requisitos
 #
@@ -47,14 +41,13 @@
 #
 # Atualmente usamos o corpus das Leis Municipais,
 # presente no arquivo `leis.json`,
-# disponível [no Kaggle]
-# (https://www.kaggle.com/anapaulagomes/leis-do-municpio-de-feira-de-santana/).
+# disponível [no Kaggle](https://www.kaggle.com/anapaulagomes/leis-do-municpio-de-feira-de-santana/).   # noqa
 
-# In[ ]:
+# In[1]:
 
 
 import re
-import unicodedata
+from collections import Counter
 
 import matplotlib.pyplot as plt
 import nltk
@@ -62,7 +55,7 @@ import pandas as pd
 from nltk import FreqDist
 from nltk.corpus import stopwords
 
-# In[ ]:
+# In[2]:
 
 
 city_laws = pd.read_json("leis.json")
@@ -70,7 +63,7 @@ city_laws.drop(["documento"], inplace=True, axis=1)
 city_laws.describe()
 
 
-# In[ ]:
+# In[3]:
 
 
 city_laws
@@ -78,7 +71,7 @@ city_laws
 
 # ### Abaixo um exemplo de uma lei do munícipio
 
-# In[ ]:
+# In[4]:
 
 
 print(city_laws.iloc[len(city_laws) - 1, 3])
@@ -93,38 +86,99 @@ print(city_laws.iloc[len(city_laws) - 1, 3])
 # A ideia é descobrir palavras chave recorrente nas Leis.
 # Sobre o que falam nossas Leis Municiapis?
 
-# In[ ]:
+# In[5]:
 
 
 nltk.download("stopwords")
 
 
-# In[ ]:
+# In[6]:
 
 
-def remove_accents(text, str):
-    nfkd_form = unicodedata.normalize("NFKD", text)
-    return "".join([char for char in nfkd_form if not unicodedata.combining(char)])
-
-
-def clean_text(text, rm_accents=False):
+def clean_text(text):
     if not isinstance(text, str):
-        raise ValueError("Argumento recebido não é uma string")
+        raise ValueError(f"Esperava string, recebido {type(text)}")
 
     # Remove pontuação, dígitos e espaços em branco
-    text = " ".join(re.findall(r"[A-Za-zÀ-ú]+[-A-Za-zÀ-ú]*", text.lower()))
-
-    if rm_accents:
-        text = remove_accents(text)
+    text = re.findall(r"[A-Za-zÀ-ú]+[-A-Za-zÀ-ú]*", text.lower())
 
     # Remove stopwords
-    # Essas palavras abaixo são muito comuns nos textos das leis
-    # (aparecem em quase todos os textos)
-    # ou não possuem valor descritivo do que diz o texto.
-    # Em ambos os casos, não possuem informação sobre o que trata
-    # o texto, que é o que a gente quer visualizar com a
-    # frequencia das palavras do texto.
-    nltk_stopwords = stopwords.words("portuguese")
+    return [word for word in text if word not in stopwords.words("portuguese")]
+
+
+# In[7]:
+
+
+text = " ".join(city_laws["texto"].tolist())
+text = clean_text(text)
+
+unique_words_count = len(set(text))
+print(f"Número de palavras únicas no texto: {unique_words_count}")
+
+
+# ## Removendo stopwords
+#
+# Stopwords são palavras a serem removidas na etapa de
+# pré-processamento do texto. Em geral são palavras muito
+# comuns, utilizadas em quase todos os textos,
+# ou não possuem valor descritivo do que diz o texto.
+#
+# Em ambos os casos, não possuem informação sobre o que trata
+# o texto, que é o que a gente quer visualizar com a
+# frequencia das palavras do texto.
+#
+# O método `clean_text` já remove algumas stopwords
+# padrões do português, como preposições, artigos, etc:
+# ("de", "a", "este").
+#
+# Utilizamos o módulo Counter do Python para visualizar
+# as palavras mais comuns nos textos das Leis
+# e decidir se elas possuem valor semântico ou não.
+# Isto é, se descrevem o conteúdo do texto ou não.
+# As palavras que não possuirem,
+# incluímos na lista de stopwords, palavras a serem
+# removidas.
+
+# In[8]:
+
+
+counter_ = Counter(text)
+counter_.most_common(100)
+
+
+# ### Selecionando as stopwords
+#
+# Palavras como:
+# 'art' (artigo),
+# 'municipal',
+# 'lei',
+# 'rua',
+# 'feira',
+# 'santana',
+# 'prefeito',
+# 'câmara',
+# 'município',
+# 'publicação',
+# 'seguinte',
+# 'disposições',
+# 'estado',
+# 'bahia',
+# 'vigor',
+# aparecem em quase todas as Leis, portanto
+# elas não identificam bem o texto das Leis.
+#
+# Letras do alfabeto e números romanos, como:
+# 'i', 'ii', 'iii',
+# 'd', 'n', 'r'
+# também aparecem bastante no texto das Leis
+# e não possuem valor semântico. Também vamos
+# remove-las.
+#
+
+# In[9]:
+
+
+def remove_stopwords(text):
     custom_stopwords = [
         "feira",
         "santana",
@@ -134,7 +188,7 @@ def clean_text(text, rm_accents=False):
         "r",
         "prefeito",
         "câmara",
-        "municipio",
+        "município",
         "data",
         "seguinte",
         "disposições",
@@ -150,6 +204,7 @@ def clean_text(text, rm_accents=False):
         "contrário",
         "presidente",
         "artigo",
+        "rua",
         "faço",
         "parágrafo",
         "executivo",
@@ -166,12 +221,11 @@ def clean_text(text, rm_accents=False):
         "autor",
         "qualquer",
         "b",
-        "decretou",
-        "execução",
         "sobre",
         "das",
         "decorrentes",
-        "decreta",
+        "fica",
+        "dias",
         "resolução",
         "geral",
         "uso",
@@ -185,25 +239,47 @@ def clean_text(text, rm_accents=False):
         "d",
         "n",
         "correrão",
+        "publicação",
     ]
-    all_stopwords = nltk_stopwords + custom_stopwords
 
-    return [word for word in text.split() if word not in all_stopwords]
-
-
-# In[ ]:
+    return [word for word in text if word not in custom_stopwords]
 
 
-text = " ".join(city_laws["texto"].tolist())
-text = clean_text(text)
-
-unique_words_count = len(set(text))
-print(f"Número de palavras únicas no texto: {unique_words_count}")
+text = remove_stopwords(text)
 
 
-# In[ ]:
+# In[10]:
 
 
 plt.figure(figsize=(20, 10))
 fd = FreqDist(text)
-fd.plot(30, title="Palavras x Frequência", figsize=(20, 10), cumulative=False)
+fd.plot(30, title="Palavras x Frequência", cumulative=False)
+
+
+# ## Analisando o resultado
+#
+# O que esperava era obter palavras comuns no
+# texto das Leis que também descrevessem o conteúdo.
+#
+# Existem algumas palavras descritivas do conteúdo,
+# por exemplo "revogadas", "secretaria", "serviços",
+# "despesas", "social", "saúde",
+# de certa forma descrevem o conteúdo das Leis.
+#
+# Aparecem alguns nomes próprios, como "José",
+# "Silva", "Santos", "Carvalho". Nomes frequentes
+# na base de dados. Os nomes do prefeito em exercício,
+# do edil, presidente da câmara e outros cargos,
+# frequentemente aparecem no texto das Leis.
+# O que por exemplo explica os nomes José e Carvalho,
+# que aparecem no nome do prefeito José Ronaldo de Carvalho,
+# ganhador de 4 pleitos no município.
+#
+# No entanto apenas estas palavras não dão uma boa
+# indicação sobre o conteúdo destas Leis. Por isso,
+# sugerimos no começo deste notebook algumas técnicas
+# para extração tópicos dos textos, bem como as
+# palavras mais frequentes nestes tópicos.
+# Possivelmente este procedimento retornará um
+# resultado mais interpretável.
+#
