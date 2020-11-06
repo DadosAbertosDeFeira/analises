@@ -1,4 +1,4 @@
-name: CI
+name: Verifica estilos e roda testes
 
 on: [ push, pull_request ]
 
@@ -17,7 +17,7 @@ jobs:
           pip install -r requirements.txt
       - name: Verifica estilos e boas práticas
         run: |
-          black --check .
-          flake8 .
+          black --check --exclude "analysis" .
+          flake8 --exclude analysis/ .
       - name: Executa os testes
         run: pytest
