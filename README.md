@@ -25,6 +25,7 @@ entender melhor sobre os dados e limpeza deles.
 * `analysis`: onde todos os jupyter notebooks devem estar
 * `docs`: site para exibir os notebooks (Github Pages)
 * `scripts`: onde colocamos scripts Python que ajudam na coleta e preparação para análises
+* `templates`: notebooks-template com instruções para auxiliar na análise de dados
 
 Os dados não serão armazenados nesse repositório porém todos os passos
 para limpeza e análise devem ser reproduzidos a partir dos dados baixados.
