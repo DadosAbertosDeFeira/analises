@@ -1,4 +1,4 @@
-name: CI
+name: Verifica estilos e roda testes
 
 on: [ push, pull_request ]
 
@@ -8,16 +8,16 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Configura o Python
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v2
         with:
-          python-version: 3.8.5
+          python-version: 3.8
       - name: Instala dependências
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       - name: Verifica estilos e boas práticas
         run: |
-          black --check .
-          flake8 .
+          black --check --exclude "analysis" .
+          flake8 --exclude analysis/ .
       - name: Executa os testes
         run: pytest
