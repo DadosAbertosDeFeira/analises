@@ -3,8 +3,8 @@ from scripts.parsers import (
     all_expenses_nature_from_tcmba,
     currency_to_float,
     extract_nature,
+    is_company,
 )
-from scripts.parsers import currency_to_float, is_company
 
 
 @pytest.mark.parametrize(
