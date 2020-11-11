@@ -1,4 +1,4 @@
-# Quais as perguntas você pretende reponder nessa análise?
+# Quais as perguntas você pretende responder nessa análise?
 
 Exemplo: Os candidatos que concorrem a reeleição recebem mais doações do que os outros?
 
