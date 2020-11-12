@@ -29,12 +29,12 @@
 #
 # Observações sobre os dados:
 #
-# * `#NULO` é o mesmo que `None`
+# * `#NULO` é o mesmo que `None` ou vazio
 # * `#NE` significa que naquele ano a informação não era registrada
 # * Campo `UF`: `BR` para nível nacional, `VT` voto em trânsito e `ZZ` para Exterior
 # * Campo `NM_UE`, no caso de eleições municipais, é o nome do município
 
-# In[2]:
+# In[45]:
 
 
 import matplotlib.pyplot as plt
@@ -45,24 +45,22 @@ from scripts.parsers import currency_to_float, is_company
 df = pd.read_csv("receitas_candidatos_2020_BA.csv", encoding="latin", delimiter=";")
 
 
-# In[3]:
+# In[46]:
 
 
-# In[4]:
+# In[47]:
 
 
 df_feira = df[df["NM_UE"] == "FEIRA DE SANTANA"].copy()
 
 
-# In[5]:
+# In[48]:
 
 
 df_feira["VR_RECEITA"] = df_feira["VR_RECEITA"].apply(currency_to_float)
 
 
-# Abaixo uma amostra aleatória de 5 doações recebidas:
-
-# In[36]:
+# In[49]:
 
 
 fields = [
@@ -84,13 +82,25 @@ fields = [
 df_filtered = df_feira[fields]
 
 
+# Para melhorar a experiência das pessoas na visualização dos dados vamos substituir
+# o valor "#NULO#" por vazio.
+
+# In[50]:
+
+
+df_filtered.replace("#NULO#", "", inplace=True)
+df_filtered[df_filtered["NM_PARTIDO_DOADOR"] == "#NULO#"]
+
+
 # ## Doações recebidas por candidatos a prefeito
 #
 # Vamos filtrar as doações feitas para prefeitos.
 # Ao final dessa página você poderá ver a lista com todos as doações
 # recebidas pelos candidatos a prefeito na cidade de Feira de Santana.
+#
+# Abaixo uma amostra aleatória de 5 doações recebidas:
 
-# In[7]:
+# In[51]:
 
 
 mayor_df = df_filtered[df_filtered["DS_CARGO"] == "Prefeito"]
@@ -99,40 +109,51 @@ mayor_df.sample(5)  # amostra das doações a prefeitos de Feira de Santana
 
 # ### Total, mediana e número de doações recebidas por candidato
 
-# In[8]:
+# In[52]:
 
 
-mayor_df.groupby(["NM_CANDIDATO"])["VR_RECEITA"].agg(
-    ["sum", "median", "count"]
-).sort_values(ascending=False, by=["sum", "NM_CANDIDATO"])
+statistics = (
+    mayor_df.groupby(["NM_CANDIDATO"])["VR_RECEITA"]
+    .agg(["sum", "median", "count"])
+    .sort_values(ascending=False, by=["sum", "NM_CANDIDATO"])
+)
+statistics
 
 
-# In[13]:
+# In[53]:
 
 
-sns.set_theme(style="whitegrid")
-f, ax = plt.subplots(figsize=(6, 15))
-plt.ticklabel_format(style="plain", axis="y", useOffset=False)
+ax = sns.histplot(data=statistics, x="sum")
+ax.set_xlabel("Valor em R$")
+ax.set_ylabel("Número de doações")
+ax.set_title("Distribuição das doações recebidas por candidato")
+ax.xaxis.get_major_formatter().set_scientific(False)
+# TODO remover nomes "debug" que aparecem antes do gráfico
+plt.xticks(rotation=45)
 
-sns.set_color_codes("pastel")
 
-sns.barplot(
+# In[54]:
+
+
+ax = sns.barplot(
     x="VR_RECEITA",
     y="NM_CANDIDATO",
     data=mayor_df,
-    label="Total",
-    color="b",
+    palette="Blues_d",
     ci=None,
     estimator=sum,
 )
-
-ax.set(xlabel="Total de doações em R$ por candidatos", ylabel="")
-sns.despine(left=True, bottom=True)
+ax.set_xlabel("Doações em R$")
+ax.set_ylabel("Candidatos")
+ax.set_title("Gráfico do total das doações recebidas por candidatos")
+ax.xaxis.get_major_formatter().set_scientific(False)
+# TODO remover nomes "debug" que aparecem antes do gráfico
+plt.xticks(rotation=45)
 
 
 # ## Quem são os doadores?
 
-# In[35]:
+# In[55]:
 
 
 mayor_df.groupby(
@@ -148,17 +169,16 @@ mayor_df.groupby(
 
 # ### Qual a origem dos recursos?
 
-# In[37]:
+# In[56]:
 
 
 ax = sns.stripplot(
-    x="NM_CANDIDATO",
-    y="VR_RECEITA",
-    hue="DS_ORIGEM_RECEITA",
-    data=mayor_df,  # , xlabel="Candidato", ylabel="R$"
+    x="NM_CANDIDATO", y="VR_RECEITA", hue="DS_ORIGEM_RECEITA", data=mayor_df
 )
+
+# TODO remover coluna da caixa da legenda
+# TODO remover nomes "debug" que aparecem antes do gráfico
 ax.set_xlabel("Candidato")
-# ax.set_yscale("log")
 ax.set_ylabel("R$")
 ax.set_xticklabels(ax.get_xticklabels(), rotation=90)
 
@@ -174,7 +194,7 @@ ax.set_xticklabels(ax.get_xticklabels(), rotation=90)
 #
 # ### Veja os valores por candidato e origem
 
-# In[15]:
+# In[57]:
 
 
 mayor_df.groupby(["NM_CANDIDATO", "DS_ORIGEM_RECEITA"])["VR_RECEITA"].agg(["sum"])
@@ -182,7 +202,7 @@ mayor_df.groupby(["NM_CANDIDATO", "DS_ORIGEM_RECEITA"])["VR_RECEITA"].agg(["sum"
 
 # ## Ranking de Doadores
 
-# In[17]:
+# In[58]:
 
 
 mayor_df.groupby(["NM_DOADOR_RFB", "NM_DOADOR"])["VR_RECEITA"].agg(["sum"]).sort_values(
@@ -192,7 +212,7 @@ mayor_df.groupby(["NM_DOADOR_RFB", "NM_DOADOR"])["VR_RECEITA"].agg(["sum"]).sort
 
 # ## As pessoas que doaram estão ligadas a empresas diretamente?
 
-# In[32]:
+# In[59]:
 
 
 def mask_cpf(cpf):
@@ -215,9 +235,14 @@ donated_by_people[
 
 
 # Para verificar se os doadores são sócios em empresas, basta acessar
-# https://brasil.io/dataset/socios-brasil/socios/ e buscar pelo nome completo.
+# https://brasil.io/dataset/socios-brasil/socios/ e buscar pelo nome completo e CPF mascarado
+# campos `Nome/Razão Social do Sócio` e `CPF/CNPJ do Sócio`.
 #
 # Verifique se o CPF mascarado bate com o CPF da página para confirmar.
+#
+# Exemplo:
+#
+# https://brasil.io/dataset/socios-brasil/socios/?search=&cnpj=&razao_social=&cpf_cnpj_socio=***092875**&nome_socio=WILSON+FERREIRA+FALCAO&tipo_socio=&qualificacao_socio=
 
 # ## Qual partido é mais generoso?
 #
@@ -225,28 +250,40 @@ donated_by_people[
 # O valor `#NULO#` representa as doações feitas por todas as outras entidades que não são
 # partidos (como pessoas e aplicativos de doação).
 
-# In[11]:
+# In[60]:
 
 
 donations_by_party = (
-    mayor_df.groupby(["NM_PARTIDO_DOADOR"], as_index=False)["VR_RECEITA"]
-    .agg(["sum"])
-    .sort_values(ascending=False, by=["sum", "NM_PARTIDO_DOADOR"])
+    mayor_df[mayor_df["NM_PARTIDO_DOADOR"] != ""]
+    .groupby(["NM_PARTIDO_DOADOR"], as_index=False)["VR_RECEITA"]
+    .agg({"Total": sum})
+    .sort_values(ascending=False, by=["Total", "NM_PARTIDO_DOADOR"])
 )
 donations_by_party
 
 
-# In[12]:
+# In[61]:
 
 
-donations_by_party.plot.bar(
-    xlabel="Partidos", stacked=True, title="Doações feitas por partidos"
+ax = sns.barplot(
+    x="Total",
+    y="NM_PARTIDO_DOADOR",
+    data=donations_by_party,
+    palette="Blues_d",
+    ci=None,
+    estimator=sum,
 )
+ax.set_xlabel("Doações em R$")
+ax.set_ylabel("Partidos")
+ax.set_title("Doações feitas por partidos")
+ax.xaxis.get_major_formatter().set_scientific(False)
+# TODO remover nomes "debug" que aparecem antes do gráfico
+plt.xticks(rotation=45)
 
 
 # ## Veja todas as doações
 
-# In[18]:
+# In[62]:
 
 
 pd.set_option("display.max_rows", None)
