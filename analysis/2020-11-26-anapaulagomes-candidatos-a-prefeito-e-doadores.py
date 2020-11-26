@@ -15,7 +15,7 @@
 #
 # A análise foi feita com arquivos do [repositório de dados eleitorais do TSE](https://www.tse.jus.br/eleicoes/estatisticas/repositorio-de-dados-eleitorais-1/repositorio-de-dados-eleitorais).
 #
-# Faça o download do arquivo: http://agencia.tse.jus.br/estatistica/sead/odsele/prestacao_contas/prestacao_de_contas_eleitorais_candidatos_2020.zip (download feito em 31/10/2020)
+# Faça o download do arquivo: http://agencia.tse.jus.br/estatistica/sead/odsele/prestacao_contas/prestacao_de_contas_eleitorais_candidatos_2020.zip (download feito em 25/11/2020)
 #
 # Siga o seguinte caminho dentro da pasta:
 # ```
@@ -34,7 +34,7 @@
 # * Campo `UF`: `BR` para nível nacional, `VT` voto em trânsito e `ZZ` para Exterior
 # * Campo `NM_UE`, no caso de eleições municipais, é o nome do município
 
-# In[45]:
+# In[41]:
 
 
 import matplotlib.pyplot as plt
@@ -45,22 +45,22 @@ from scripts.parsers import currency_to_float, is_company
 df = pd.read_csv("receitas_candidatos_2020_BA.csv", encoding="latin", delimiter=";")
 
 
-# In[46]:
+# In[42]:
 
 
-# In[47]:
+# In[43]:
 
 
 df_feira = df[df["NM_UE"] == "FEIRA DE SANTANA"].copy()
 
 
-# In[48]:
+# In[44]:
 
 
 df_feira["VR_RECEITA"] = df_feira["VR_RECEITA"].apply(currency_to_float)
 
 
-# In[49]:
+# In[45]:
 
 
 fields = [
@@ -85,10 +85,10 @@ df_filtered = df_feira[fields]
 # Para melhorar a experiência das pessoas na visualização dos dados vamos substituir
 # o valor "#NULO#" por vazio.
 
-# In[50]:
+# In[46]:
 
 
-df_filtered.replace("#NULO#", "", inplace=True)
+df_filtered = df_filtered.replace("#NULO#", "").copy()
 df_filtered[df_filtered["NM_PARTIDO_DOADOR"] == "#NULO#"]
 
 
@@ -100,7 +100,7 @@ df_filtered[df_filtered["NM_PARTIDO_DOADOR"] == "#NULO#"]
 #
 # Abaixo uma amostra aleatória de 5 doações recebidas:
 
-# In[51]:
+# In[47]:
 
 
 mayor_df = df_filtered[df_filtered["DS_CARGO"] == "Prefeito"]
@@ -109,7 +109,7 @@ mayor_df.sample(5)  # amostra das doações a prefeitos de Feira de Santana
 
 # ### Total, mediana e número de doações recebidas por candidato
 
-# In[52]:
+# In[48]:
 
 
 statistics = (
@@ -120,7 +120,7 @@ statistics = (
 statistics
 
 
-# In[53]:
+# In[49]:
 
 
 ax = sns.histplot(data=statistics, x="sum")
@@ -128,11 +128,10 @@ ax.set_xlabel("Valor em R$")
 ax.set_ylabel("Número de doações")
 ax.set_title("Distribuição das doações recebidas por candidato")
 ax.xaxis.get_major_formatter().set_scientific(False)
-# TODO remover nomes "debug" que aparecem antes do gráfico
 plt.xticks(rotation=45)
 
 
-# In[54]:
+# In[50]:
 
 
 ax = sns.barplot(
@@ -147,13 +146,12 @@ ax.set_xlabel("Doações em R$")
 ax.set_ylabel("Candidatos")
 ax.set_title("Gráfico do total das doações recebidas por candidatos")
 ax.xaxis.get_major_formatter().set_scientific(False)
-# TODO remover nomes "debug" que aparecem antes do gráfico
 plt.xticks(rotation=45)
 
 
 # ## Quem são os doadores?
 
-# In[55]:
+# In[51]:
 
 
 mayor_df.groupby(
@@ -169,32 +167,34 @@ mayor_df.groupby(
 
 # ### Qual a origem dos recursos?
 
-# In[56]:
+# In[52]:
 
 
 ax = sns.stripplot(
     x="NM_CANDIDATO", y="VR_RECEITA", hue="DS_ORIGEM_RECEITA", data=mayor_df
 )
 
-# TODO remover coluna da caixa da legenda
-# TODO remover nomes "debug" que aparecem antes do gráfico
 ax.set_xlabel("Candidato")
 ax.set_ylabel("R$")
 ax.set_xticklabels(ax.get_xticklabels(), rotation=90)
 
 
 # Entre os candidatos podemos ver diferenças na distribuição da origem das receitas.
+#
 # O candidato CARLOS MEDEIROS MIRANDA (Novo) recebeu doações diversificadas de pessoas
 # físicas. Enquanto DAYANE JAMILLE CARNEIRO DOS SANTOS PIMENTEL recebeu massivamente doações
-# vindas do seu partido (PSL), graças ao fundão eleitoral.
-# A candidata que se destacou no recebimento de recursos de financiamento coletivo, que
-# ainda não é muito popular dentre os outros candidatos, foi a MARCELA PREST (PSOL).
-# O candidato JOSE CERQUEIRA DE SANTANA NETO foi quem mais investiu em sua campanha
-# a partir de recursos próprios.
+# vindas do seu partido (PSL), tudo indica que graças ao fundão eleitoral ([o PSL recebeu o segundo
+# maior montante dessas eleições, com cerca de 199 milhões de reais](https://www.tse.jus.br/imprensa/noticias-tse/2020/Junho/divulgada-nova-tabela-com-a-divisao-dos-recursos-do-fundo-eleitoral-para-2020)).
+#
+# A candidata que se destacou no recebimento de recursos de financiamento coletivo,
+# modalidade que ainda não é muito popular dentre os outros candidatos, foi a MARCELA PREST (PSOL).
+#
+# O candidato JOSE CERQUEIRA DE SANTANA NETO foi quem mais investiu em sua campanha a partir de recursos próprios,
+# seguido do candidato CARLOS GEILSON DOS SANTOS SILVA.
 #
 # ### Veja os valores por candidato e origem
 
-# In[57]:
+# In[53]:
 
 
 mayor_df.groupby(["NM_CANDIDATO", "DS_ORIGEM_RECEITA"])["VR_RECEITA"].agg(["sum"])
@@ -202,7 +202,7 @@ mayor_df.groupby(["NM_CANDIDATO", "DS_ORIGEM_RECEITA"])["VR_RECEITA"].agg(["sum"
 
 # ## Ranking de Doadores
 
-# In[58]:
+# In[54]:
 
 
 mayor_df.groupby(["NM_DOADOR_RFB", "NM_DOADOR"])["VR_RECEITA"].agg(["sum"]).sort_values(
@@ -212,7 +212,7 @@ mayor_df.groupby(["NM_DOADOR_RFB", "NM_DOADOR"])["VR_RECEITA"].agg(["sum"]).sort
 
 # ## As pessoas que doaram estão ligadas a empresas diretamente?
 
-# In[59]:
+# In[55]:
 
 
 def mask_cpf(cpf):
@@ -238,7 +238,8 @@ donated_by_people[
 # https://brasil.io/dataset/socios-brasil/socios/ e buscar pelo nome completo e CPF mascarado
 # campos `Nome/Razão Social do Sócio` e `CPF/CNPJ do Sócio`.
 #
-# Verifique se o CPF mascarado bate com o CPF da página para confirmar.
+# Para confirmar as informações, verifique se o CPF mascarado que você buscou bate com o
+# CPF mostrado e com o nome completo da página para confirmar.
 #
 # Exemplo:
 #
@@ -250,7 +251,7 @@ donated_by_people[
 # O valor `#NULO#` representa as doações feitas por todas as outras entidades que não são
 # partidos (como pessoas e aplicativos de doação).
 
-# In[60]:
+# In[56]:
 
 
 donations_by_party = (
@@ -262,28 +263,22 @@ donations_by_party = (
 donations_by_party
 
 
-# In[61]:
+# In[57]:
 
 
 ax = sns.barplot(
-    x="Total",
-    y="NM_PARTIDO_DOADOR",
-    data=donations_by_party,
-    palette="Blues_d",
-    ci=None,
-    estimator=sum,
+    x="Total", y="NM_PARTIDO_DOADOR", data=donations_by_party, ci=None, estimator=sum
 )
 ax.set_xlabel("Doações em R$")
 ax.set_ylabel("Partidos")
-ax.set_title("Doações feitas por partidos")
+ax.set_title("Gráfico das doações por partido")
 ax.xaxis.get_major_formatter().set_scientific(False)
-# TODO remover nomes "debug" que aparecem antes do gráfico
 plt.xticks(rotation=45)
 
 
 # ## Veja todas as doações
 
-# In[62]:
+# In[58]:
 
 
 pd.set_option("display.max_rows", None)
