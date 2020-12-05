@@ -7,28 +7,27 @@
 # exibir textos semelhantes e com isso avaliar as representações.
 # Os textos semelhantes são um teste para a representação do texto:
 # se os textos mostrados não são semelhantes, então a representação não é boa;
-# se são semelhantes, então a representação um pouco melhor.
+# se são semelhantes, então a representação pode ser boa.
 #
 # ## Dados
 #
-# Embora a proposta deste notebook um template genérico para comparação de textos,
-# neste notebook utilizamos o dataset das leis municipais, disponível
+# Este notebook é um template genérico para comparação de textos.
+# Utilizamos o dataset das leis municipais, disponível
 # [aqui](https://www.kaggle.com/anapaulagomes/leis-do-municpio-de-feira-de-santana/).
 #
 
 # In[ ]:
 
 
-import sys
-
 import numpy as np
 import pandas as pd
-from scipy.sparse import csr_matrix
+from gensim.models import Word2Vec
+from gensim.models.doc2vec import Doc2Vec, TaggedDocument
 from scripts.parsers import clean_text
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 
-# In[48]:
+# In[ ]:
 
 
 laws_file = "leis.json"
@@ -59,8 +58,16 @@ laws.sample(10)
 # In[ ]:
 
 
+def print_law(law_idx):
+    print(f"LEI {law_idx}:\n\n")
+    print(laws.loc[law_idx, "texto"])
+
+
+# In[ ]:
+
+
 # Exemplo de texto de lei
-print(laws.loc[len(laws) - 1, "texto"])
+print_law(len(laws) - 1)
 
 
 # ## Comparando documentos: representação e calculo de similaridade
@@ -99,7 +106,7 @@ tf_representation = vectorizer.fit_transform(laws["texto_limpo"])
 tf_representation
 
 
-# Com a matriz de documentos ~literalmente~ em mãos,
+# Com a matriz de documentos ~~literalmente~~ em mãos,
 # vamos calcular a similaridade entre dois textos.
 # A similaridade é calculada pela similaridade do cosseno (ver algebra linear).
 # Existem outras medidas pra calcular similaridade / distância.
@@ -109,28 +116,21 @@ tf_representation
 
 
 cos_sim_matrix = cosine_similarity(tf_representation, dense_output=True)
-# sorts ascending, per row,
-# the indexes of the documents according to their cossine similarity
+
+# ordenando de forma crescente, por linha,
+# os índices dos documentos de acordo com
+# a medida de distância (similaridade cosseno)
 cos_sim_argsort = np.argsort(cos_sim_matrix)
 
 
 # In[ ]:
 
 
-most_similar_indexes_tf = cos_sim_argsort[:, -2]  # -1 is the same text
+# -1 é o mais similar (o mesmo texto)
+most_similar_indexes_tf = cos_sim_argsort[:, -2]
 tf_similarities = [
     cos_sim_matrix[i, ind] for i, ind in enumerate(most_similar_indexes_tf)
 ]
-
-
-# In[ ]:
-
-
-def print_laws(original_law_index, compared_law_index: int):
-    print(f"- - - LEI: {original_law_index}: - - -\n\n")
-    print(laws.loc[original_law_index, "texto"])
-    print(f"\n\n- - - LEI COMPARADA: {compared_law_index} - - -\n\n")
-    print(laws.loc[compared_law_index, "texto"])
 
 
 # In[ ]:
@@ -142,11 +142,14 @@ print(f"Maior similaridade entre duas Leis: {max_sim_overall}")
 original_law_index = np.argmax(tf_similarities)
 most_similar_law_index = most_similar_indexes_tf[original_law_index]
 
-print_laws(original_law_index, most_similar_law_index)
+print(f"Leis mais similares:\n")
+print_law(original_law_index)
+print_law(most_similar_law_index)
 
 
 # As leis 5949 e 6026 são idênticas.
 # Opa! Lei 13 e Lei 118 são a mesma lei, com 3 dias de diferença. Por que existe isso?
+# Uma boa investigação pra fazer.
 
 # ### TF-IDF
 #
@@ -176,8 +179,11 @@ tfidf_representation
 most_similar_law_idx = cos_sim_tfidf_sorted_idxs[original_law_index, -2]
 tfidf_similarity = cos_sim_tfidf[original_law_index, most_similar_law_idx]
 
-print("Dada a mesma lei anterior, " f"similaridade com TF-IDF é: {tfidf_similarity}")
-print_laws(original_law_index, most_similar_law_idx)
+print(
+    f"Dada a primeira lei anterior, similaridade com TF-IDF é: {round(tfidf_similarity, 2)}  e lei mais similar é:\n"
+)
+print_law(original_law_index)
+print_law(most_similar_law_idx)
 
 
 # Mostram a mesma lei. O que faz sentido, já que as leis são idênticas.
@@ -187,12 +193,13 @@ print_laws(original_law_index, most_similar_law_idx)
 
 most_similar_indexes_tfidf = cos_sim_tfidf_sorted_idxs[:, -2]
 
-same_result = most_similar_indexes_tf == most_similar_indexes_tfidf
-print(same_result)
-print(f"Concordam em {sum(same_result) / len(same_result) * 100}% dos resultados")
+dif_tf_tfidf = most_similar_indexes_tf != most_similar_indexes_tfidf
+print(
+    f"TF e TF-IDF discordam em {round(sum(dif_tf_tfidf) / len(dif_tf_tfidf) * 100, 2)}% dos resultados"
+)
 
 
-# A lei mais semelhante de acordo com TF e TF-IDF é a mesma 40% das vezes.
+# A lei mais semelhante de acordo com TF e TF-IDF é diferente 56,97% das vezes.
 #
 # Vamos dar uma olhada em algumas leis onde os resultados diferem,
 # para ter uma intuição sobre qual representação é melhor para as leis.
@@ -203,23 +210,46 @@ print(f"Concordam em {sum(same_result) / len(same_result) * 100}% dos resultados
 # In[ ]:
 
 
-different_result_indexes = [i for i, _ in enumerate(same_result) if not same_result[i]]
-comparisons_count = 10
-drafted_indexes = np.random.randint(
-    0, high=len(different_result_indexes) - 1, size=comparisons_count
-)
-drafted_laws = [different_result_indexes[i] for i in drafted_indexes]
-print(drafted_laws)
+def get_disagreement_idxs(dif_array, num_laws=10):
+    dif_results_idxs = [i for i, dif_result in enumerate(dif_array) if dif_result]
+    random_idxs = np.random.randint(len(dif_results_idxs) - 1, size=num_laws)
+    drafted_laws_idxs = [dif_results_idxs[i] for i in random_idxs]
+    return drafted_laws_idxs
+
+
+def compare_methods(
+    laws_idxs,
+    sim_array_a,
+    sim_array_b,
+    method_a_name="Metodo A",
+    method_b_name="Metodo B",
+):
+    for i in laws_idxs:
+        print(f"\n- - Lei comparada - -\n")
+        print_law(i)
+        print(f"\nMais similar de acordo com {method_a_name}:\n")
+        print_law(sim_array_a[i])
+        print(f"\nMais similar de acordo com {method_b_name}:\n")
+        print_law(sim_array_b[i])
 
 
 # In[ ]:
 
 
-for i in drafted_laws:
-    print("\n\nCOMPARACAO UTILIZANDO TF:\n\n")
-    print_laws(i, most_similar_indexes_tf[i])
-    print("\n\nCOMPARACAO UTILIZANDO TF-IDF:\n\n")
-    print_laws(i, most_similar_indexes_tfidf[i])
+drafted_laws_idxs = get_disagreement_idxs(dif_tf_tfidf)
+print(drafted_laws_idxs)
+
+
+# In[ ]:
+
+
+compare_methods(
+    drafted_laws_idxs,
+    most_similar_indexes_tf,
+    most_similar_indexes_tfidf,
+    method_a_name="TF",
+    method_b_name="TF-IDF",
+)
 
 
 # Como é um sorteio,
@@ -326,8 +356,6 @@ for i in drafted_laws:
 
 # ### Vetor de palavras - word embedding
 #
-# ***AVISO! ESTA PARTE GASTA MUITA MEMÓRIA!***
-#
 # A ideia dessa representação é
 # criar um vetor pra cada palavra,
 # com base nas palavras vizinhas.
@@ -339,259 +367,251 @@ for i in drafted_laws:
 # Ou ainda:
 # "conhecerás a palavra pelas compainhas que ela mantém".
 #
-# Na prática,
-# vamos utilizar um método bem simples
-# baseado nesta hipótese.
+# Vamos utilizar um método
+# baseado nesta hipótese chamado
+# [word2vec](https://arxiv.org/pdf/1301.3781.pdf).
+# Existem outros, como GloVe, FastText, etc.
+# Para construir as representações word2vec,
+# utilizaremos a biblioteca
+# [Gensim](https://radimrehurek.com/gensim/).
+#
 # Cada palavra é representada por um vetor
-# de _n_ dimensões,
-# onde _n_ é o tamanho do vocabulário.
-# Os valores de cada dimensão são
-# a frequência com que a palavra
-# representada por esta dimensão
-# aparece como vizinha da palavra sendo representada.
+# de _n_ dimensões. Estes vetores são
+# inicializados de forma aleatória.
+# A seguir, o modelo tenta prever uma palavra
+# de acordo com as anteriores (CBOW) ou as
+# palavras vizinhas (skip-gram) e vai ajustando
+# os valores de cada vetor de acordo.
 #
-# A vizinhança pode variar.
-# Neste caso,
-# temos como vizinhas palavras até 2 tokens de distância.
-# Portanto,
-# na frase "dados abertos de feira é massa",
-# a palavra "_de_" é vizinha de todas as palavras,
-# exceto "_massa_".
+# Ao final do processo, os vetores possuem
+# alguma informação semântica sobre as palavras.
+# Por exemplo, o vetor de "rei" e "rainha" estarão
+# próximos e distantes de "ônibus" e "avião",
+# palavras utilizadas em outro contexto (vizinhança).
+#
+# Isto possibilita operações aritiméticas com as
+# palavras. Por exemplo:
+#
+# `rei` - `homem` + `mulher` = `rainha`
+#
+# Mais informações sobre word2vec nas duas primeiras
+# [aulas](https://www.youtube.com/watch?v=8rXD5-xhemo&list=PLoROMvodv4rOhcuXMZkNm7j3fVwBBY42z)
+# deste curso. Se quiser saber mais sobre representações
+# de texto, o gensim tem ótimos
+# [tutoriais](https://radimrehurek.com/gensim/auto_examples/index.html).
+# [Este repositório](https://github.com/RaRe-Technologies/movie-plots-by-genre)
+# também possui um notebook tutorial que exemplifica
+# representações e classificação de textos.
+#
+#
+# Caso você tenha um material que explique
+# representações de texto, especialmente em português,
+# manda pra gente ou faz um PR pra adicionar ele aqui!
+# Adoraríamos essa contribuição!
+#
 
-# In[5]:
+# In[ ]:
 
 
-keep_execution = input(
-    "O trecho a seguir consome muita memoria "
-    "(em torno de 12 GB).\n"
-    "Deseja prosseguir? (s/n)"
+corpus = laws["texto_limpo"].apply(lambda x: x.split())
+model_w2v = Word2Vec(sentences=corpus, window=5, min_count=5, workers=8)
+
+
+# ### Palavras semelhantes
+#
+# Uma das vantagens desse modelo é que
+# podemos explorar a semelhança entre palavras.
+#
+# No texto das Leis, quais as palavras mais semelhantes
+# a `educação` ou `saúde`, por exemplo?
+#
+# Você pode explorar outras semelhanças modificando
+# o código da próxima célula:
+
+# In[ ]:
+
+
+model_w2v.most_similar("transporte", topn=10)
+
+
+# Semelhantes a `educação`:
+# saúde, escolar, seduc, especialistas
+# executiva, escolarização, cultura
+# prevenção, professores, endemias.
+#
+# Semelhantes a `saúde`:
+# educação, competirá, vigilância,
+# seduc, médico-hospitalar, básico
+# segunraça, sus, incumbida, rede
+#
+# Semelhantes a `segurança`:
+# higiene, alimentar, nutricional,
+# conforto, coletiva, zelar,
+# garantir, engenharia, visando, melhor.
+#
+# Semelhantes a `transporte`:
+# coletivo, passageiros, alternativo,
+# cargas, táxi, convencional, veículos,
+# individual, coeltivos, stiac.
+#
+# Embora muitas palavras de fato indiquem semelhanças,
+# algumas palavras não possuem muita relação.
+# Por exemplo: "saúde" e "competirá".
+# Isto pode ocorrer porque a palavra "competirá"
+# ocorre em contextos parecidos a "saúde".
+#
+# Uma forma de mitigar estes problemas é treinando
+# com mais dados. Podemos, por exemplo, carregar todos
+# os documentos de textos e treiná-los todos juntos.
+# Este também é um bom exercício, se você está aprendendo.
+# Faz um PR pra gente!
+
+#
+
+# ## Construindo a representação das Leis
+#
+# O Gensim também traz uma ferramenta para
+# gerar embeddings de textos inteiros, chamada
+# [Doc2Vec](https://radimrehurek.com/gensim/models/doc2vec.html#gensim.models.doc2vec.Doc2Vec).
+# Esta técnica utiliza uma ideia semelhante ao Word2Vec,
+# com adaptações para cobrir um texto inteiro.
+
+# In[ ]:
+
+
+# PS: Um compilador C torna o Doc2Vec em até 70x mais rápido
+documents = [TaggedDocument(doc, [i]) for i, doc in enumerate(corpus)]
+documents[:2]
+
+
+# In[ ]:
+
+
+model_d2v = Doc2Vec(vector_size=50, min_count=5, window=2, workers=8, epochs=40)  #
+model_d2v.build_vocab(documents)
+model_d2v.train(
+    documents, total_examples=model_d2v.corpus_count, epochs=model_d2v.epochs
 )
-if keep_execution == "n":
-    sys.exit()
 
 
 # In[ ]:
 
 
-cleaned_text = " ".join(laws["texto_limpo"].tolist())
-cleaned_text = cleaned_text.split()
-unique_words = set(cleaned_text)
-print(f"Text length: {len(cleaned_text)}")
-print(f"Vocabulary length: {len(unique_words)}")
+most_similar_idxs_d2v = []
+for i in range(len(documents)):
+    doc_vec = model_d2v.docvecs[i]
+    most_similar_idx = model_d2v.docvecs.most_similar([doc_vec], topn=2)[1][0]
+    most_similar_idxs_d2v.append(most_similar_idx)
 
 
 # In[ ]:
 
 
-word_indexes = {}
-for i, word in enumerate(unique_words):
-    word_indexes[word] = i
-
-
-# In[ ]:
-
-
-# Esta parte consome muita memória
-# pra rodar esta parte, descomente a linha abaixo
-word_embedding_matrix = np.zeros((len(unique_words), len(unique_words)), dtype=np.int16)
-word_embedding_matrix
-
-
-# In[ ]:
-
-
-neighborhood = 2
-for idx, word in enumerate(cleaned_text):
-    for i in range(1, neighborhood):
-        neighbor_word = cleaned_text[idx + i]
-
-        word_idx = word_indexes[word]
-        neighbor_index = word_indexes[neighbor_word]
-
-        word_embedding_matrix[word_idx, neighbor_index] += 1
-        word_embedding_matrix[neighbor_index, word_idx] += 1
-    if idx == len(cleaned_text) - neighborhood:
-        break
-word_embedding_matrix
-
-
-# In[ ]:
-
-
-# Transform to sparse, to avoid memory consumption
-word_embedding_matrix = csr_matrix(word_embedding_matrix)
-word_embedding_matrix
-
-
-# In[ ]:
-
-
-# We have our word representation
-# Lets test it checking the most similar words to 10 random words
-words_cosine_similarity_matrix = cosine_similarity(
-    word_embedding_matrix, dense_output=False
-)
-words_cosine_similarity_matrix
-
-
-# In[ ]:
-
-
-palavras_semelhantes = np.argsort(words_cosine_similarity_matrix[0].toarray())
-len(palavras_semelhantes[0])
-
-
-# In[ ]:
-
-
-drafted_words_index = np.random.randint(len(unique_words), size=10)
-
-
-def show_words(idx: int, similar_words: list, vocabulary: list):
-    word = vocabulary[idx]
-    print(f"Lista de palavras similares a {word} - {idx}:")
-    for i in similar_words:
-        word = vocabulary[i]
-        print(f"{word} - {i}")
-    print("\n- - - - - \n\n")
-
-
-vocabulary = list(word_indexes.keys())
-for idx in drafted_words_index:
-    sorted_cosine_similarities_array = np.argsort(
-        words_cosine_similarity_matrix[idx].toarray()
-    )
-    similar_words = sorted_cosine_similarities_array[0][-10:-1]
-    show_words(idx, similar_words, vocabulary)
-
-
-# Neste corpus, pra algumas palavras,
-# a hipótese distribucional parece funcionar bem,
-# pra outras nem tanto, pra outras não funciona.
-#
-# Semelhantes a "outorgar" temos:
-# "permutar", "editar", "contratar", "doar",
-# "conceder", "dispensar", "celebrar", "subscrever", "proibir".
-# Embora a semântica (significado) não seja necessariamente próxima,
-# todas as palavras são verbos, então a sintaxe é próxima.
-#
-# Semelhantes a "ibitita":
-# "axixa", "ibirarema", "peritoro", "piracaia", "igarata",
-# "erechim", "itaperuna", "piata", "vandinha".
-# Todos parecem nomes de locais.
-#
-# Existem casos horríveis.
-# Semelhantes à "coesao" temos:
-# "sedeso", "his", "ctps", "zeis", "pnas", "cgfmhis", "snhis", "acemas".
-# O que significam essas palavras?
-# Talvez seja útil melhorar a qualidade do pré-processamento pra melhorar na indexação.
-#
-# Semelhantes à "separando" temos: "agrossilvopastoris", "cemiteriais", "solidos",
-# "molhados", "domiciliares", "volumosos", "baldios", "antecedencia", "dimensao".
-#
-# Há casos mistos.
-# Semelhantes `a "trasporte" (note o erro) temos:
-# "meia" (talvez meia passagem?), "transporte" (a palavra correta aparece em segundo),
-# "roletas", "vala" (?), "trafegos", "convencional" (?),
-# "edificar" (?), "passageiros", "fretado".
-#
-# Talvez o corpus seja pequeno demais
-# pra encontrar as relações entre as palavras só contando?
-# Há de se testar se não é melhor então trabalhar com vetores de palavras,
-# mesmo aprendidos em um corpus pequeno.
-# Segundo o paper
-# "Don't count, predict! a systematic comparison of context-counting vs.
-# context-predicting semantic vectors (2014) - Baroni, Dinu, Kruszeweski",
-# predizer é melhor que contar.
-# Há de se testar se neste nosso contexto isso também se verifica.
-#
-# Por hora,
-# vamos testar se a busca melhora ou não utilizando as palavras.
-# Então vamos construir a representação das leis.
-#
-# # Construindo representação das leis com base na hipotese distribucional
-
-#
-
-# In[ ]:
-
-
-# Cada lei vai ser a soma dos word_embedding_matrix de suas palavras
-# Usando np.zeros gasta muita memoria, mas csr_matrix eh muito lento
-word_embedding_representation = np.zeros(
-    (len(laws["texto_limpo"]), word_embedding_matrix.shape[1])
-)
-for idx, law in enumerate(laws["texto_limpo"]):
-    for word in law.split():
-        word_index = word_indexes[word]
-        word_embedding_representation[idx] += word_embedding_matrix[word_index]
-word_embedding_representation
-
-
-# In[ ]:
-
-
-word_embedding_cosine_similarity = cosine_similarity(word_embedding_representation)
-
-
-# In[ ]:
-
-
-most_similar_indexes_word_embedding = [
-    idx for idx in np.argsort(word_embedding_cosine_similarity)[:, -2]
-]
-
-
-# In[ ]:
-
-
-# Diferenca de vetores pra TFIDF eh bem maior.
-# Vamos samplear algumas dessas diferencas e
-# mostrar uma lei q tanto TFIDF como Count erraram
-different_result_from_tfidf = (
-    most_similar_indexes_word_embedding != most_similar_indexes_tfidf
-)
+dif_d2v_to_tfidf = most_similar_indexes_tfidf != most_similar_idxs_d2v
 print(
-    "Porcentagem de resultados diferentes de TFIDF: "
-    f"{sum(different_result_from_tfidf)*100 / len(different_result_from_tfidf)}"
+    f"Porcentagem de resultados diferentes de TFIDF: {round(sum(dif_d2v_to_tfidf)*100 / len(dif_d2v_to_tfidf),2)}"
 )
 
+
+# ## Comparação Doc2Vec x TF-IDF
+#
+# A diferença de resultados mais semelhantes entre Doc2Vec e TF-IDF é
 
 # In[ ]:
 
 
-drafted_laws_index = np.random.randint(len(different_result_from_tfidf), size=10)
-for i in drafted_laws_index:
-    if different_result_from_tfidf[i]:
-        print("\n\nVETOR DE PALAVRAS:\n\n")
-        print_laws(i, most_similar_indexes_word_embedding[i])
-        print("\n\nTF-IDF:\n\n")
-        print_laws(i, most_similar_indexes_tfidf[i])
+drafted_laws_idxs = get_disagreement_idxs(dif_d2v_to_tfidf, num_laws=5)
+compare_methods(
+    drafted_laws_idxs,
+    most_similar_indexes_tfidf,
+    most_similar_idxs_d2v,
+    method_a_name="TF-IDF",
+    method_b_name="Doc2Vec",
+)
 
 
-# Parece que TF-IDF é um pouco melhor na comparação de leis,
-# pq traz resultados mais relevantes quando comparados nome de bairros e ruas.
-# No entanto, a forma vetorizada parece ser boa pra reconhecer formatos da Lei em geral,
-# uma especie de POS, reconhecendo que existe uma entidade alí ou verbo etc.
-# Ao menos foi minha impressão.
-# Cabe mais investigação a respeito.
+# ### Lei 2011:
 #
-# Vale salientar que a qualidade dos vetores parece não estar tão boa.
-# Vide a semelhança de palavras. Como fazer pra consertar isso?
-# Seria muito interessante corrigir isso pra ver as palavras mais semelhantes à
-# educação,saúde etc e também pra visualizar com tsne os clusters gerados a partir daí.
+# Conteúdo obsoleto:
+# Este  Ato não tem mais efeito prático, pois o conteúdo é temporal.
+# 22 de Dezembro de 2005.
+#
+# - TF-IDF trouxe Lei 2748:
+#
+#     Conteúdo obsoleto:
+#     Este  Ato não tem mais efeito prático, pois o conteúdo é temporal.
+#     20 de Junho de 2003.
+#
+# - Doc2Vec trouxe Lei 4046:
+#
+#     Lei Orgânica do Município.
+#     Concede título de cidadão Feireense.
+#
+# TF-IDF muito melhor.
+#
+# PS: Não sabia que o conteúdo da Lei era apagado depois que o prazo vencia.
+# Tá certo isso?
+#
+# ### Lei 5674:
+#
+# Mudança de nome de Rua Alegria pra Rua Maria Quitéria de Jesus, na Vila de Tiquarusú
+#
+# - TF IDF trouxe Lei 6014:
+#
+#     Nominada nova rua "Rua Congego Cupertino Lacerda" da Senador Quintino à Comandante Almiro.
+#
+# - Doc2Vec trouxe Lei 1142:
+#
+#     Mudança no texto das leis.
+#
+# Novamente TF-IDF chegou muito mais perto
+#
+# ### Lei 1943:
+#
+# Faço saber do Dia Municipal de Organizações da Sociedade Civil
+#
+# - TF IDF. Lei 3212:
+#
+#     Faço saber divuglando Associação Espírita Lar da Esperança
+#
+# - Doc2Vec. Lei 3070:
+#
+#     Faço saber Dia Municipal do Feirante.
+#
+# Dessa vez Doc2Vec se saiu melhor.
+# Ambas trouxeram Faço saber,
+# mas Doc2Vec trouxe um faço saber de feriado,
+# enquanto a Lei mais semelhante por TF-IDF
+# apresentou um faço saber de divulgação de associação espírita.
+#
+# ### Leis 5058 e 3799:
+#
+# Duas Leis idênticas, exceto os números,
+# que não são considerados pelos métodos de busca:
+#
+# `"Visualizar Ato:Decreto Legislativo nº 33/2011 - Feira de Santana-BA"`
+#
+# Ambos os métodos trouxeram leis idênticas.
+#
+# - TF-IDF: 5105, 5105
+# - Doc2Vec: 4207, 3953
+#
+#
+
+# TF-IDF e sai um pouco melhor nas Leis analisadas.
+#
+# Como a diferença da Lei mais próxima entre TF-IDF e Do2Vec
+# é grande (87%), acredito que TF-IDF seja uma opção melhor para utilizar.
 
 # ## Outras opções
 # ### Indexar
 #
 # Há outras formas de indexar os documentos e de recuperar, também simples.
-# Uma outra forma de indexar, por exemplo,
-# é fazer um vetor pra cada palavra contando as palavras vizinhas.
-# E depois, o vetor do documento seria a soma dos vetores das palavras.
-# É uma forma interessante porque pode gerar visualizações interessantes
-# entre a similaridade das palavras.
-# Por exemplo, no corpus das Leis Municipais,
-# a quais palavras EDUCAÇÃO mais se assemelha? Ou SAÚDE? Etc.
+#
+# Uma outra forma de criar representações para indexar, por exemplo,
+# é calcular a média dos vetores pra cada palavra do documento.
+# Doc2Vec em geral é ligeramente melhor, mas precisamos testar
+# no nosso corpus.
 #
 # Outra forma é contar n-gramas - por exemplo, bi-gramas:
 # duas palavras juntas formando um token.
@@ -601,9 +621,9 @@ for i in drafted_laws_index:
 #
 # ### Recuperar
 #
-# Outra forma de recuperar é por local sensitive hashing.
-# Divide em vários planos múltiplas vezes
-# e retorna os resultados que estão na mesma região da query.
+# Outra forma de recuperar é por local sensitive hashing:
+# Dividir o espaço vetorial em vários planos múltiplas vezes
+# e retornar os resultados que estão na mesma região da query.
 # No entanto, o corpus não é grande o suficiente pra precisar essa estratégia,
 # que é mais pra grandes corpora.
 # O método acima (calcular a simlaridade cosseno e retornar os maiores valores)
