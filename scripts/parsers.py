@@ -7,6 +7,8 @@ import xlrd
 from nltk.corpus import stopwords
 from scripts.stopwords import CUSTOM_STOPWORDS
 
+nltk.download("stopwords")
+
 
 def currency_to_float(value):
     """Converte de R$ 69.848,70 (str) para 69848.70 (float)."""
@@ -46,7 +48,6 @@ def remove_stopwords(text):
     if not isinstance(text, str):
         return ""
 
-    nltk.download("stopwords")
     nltk_stopwords = stopwords.words("portuguese")
     all_stopwords = nltk_stopwords + CUSTOM_STOPWORDS
 
