@@ -11,6 +11,6 @@ pytest==6.1.2
 seaborn==0.11.0
 spacy==2.3.4
 texthero==1.0.9
-unidecode==1.1.1
+unidecode==1.1.2
 wordcloud==1.8.1
 xlrd==1.2.0
