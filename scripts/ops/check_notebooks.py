@@ -6,8 +6,8 @@ import re
 
 def read_files():
     current_dir = os.getcwd()
-    notebooks = glob.glob(f"{current_dir}/analysis/*.ipynb")
-    scripts = glob.glob(f"{current_dir}/analysis/*.py")
+    notebooks = glob.glob(f"{current_dir}/analysis/**/*.ipynb", recursive=True)
+    scripts = glob.glob(f"{current_dir}/analysis/**/*.py", recursive=True)
     htmls = glob.glob(f"{current_dir}/docs/notebooks/*.html")
     return notebooks, scripts, htmls
 
