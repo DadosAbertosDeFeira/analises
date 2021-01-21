@@ -1,7 +1,6 @@
 import pytest
 from scripts.parsers import (
     all_expenses_nature_from_tcmba,
-    clean_text,
     currency_to_float,
     extract_nature,
 )
@@ -20,28 +19,6 @@ from scripts.parsers import (
 )
 def test_currency_to_float(original_value, expected_value):
     assert currency_to_float(original_value) == expected_value
-
-
-@pytest.mark.parametrize(
-    "text,cleaned_text",
-    [
-        ("Guarda-chuva", "guarda-chuva"),
-        ("123abraço", "abraço"),
-        ("123oliveira4", "oliveira"),
-        ("Onde.Vai", "onde vai"),
-        ("AteNÇÃo", "atenção"),
-        ("Qualquer uma destas xx casas", "casas"),
-        ("Pé-De-Moleque", "pé-de-moleque"),
-        ("________", ""),
-        ("anexo______", "anexo"),
-        ("neuro-", "neuro-"),
-        ("Único", "único"),
-        ("Resolução:", "resolução"),
-        ("Frase longa avatar aang.", "frase longa avatar aang"),
-    ],
-)
-def test_clean_text(text, cleaned_text):
-    assert clean_text(text) == cleaned_text
 
 
 @pytest.mark.parametrize(

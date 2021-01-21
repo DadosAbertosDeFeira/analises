@@ -27,16 +27,16 @@
 #
 # "Rua Espassonavel" - retorna Lei Municipal que cita a rua.
 
-# In[6]:
+# In[ ]:
 
 
 import numpy as np
 import pandas as pd
-from scripts.parsers import clean_text
+from scripts.nlp import remove_portuguese_stopwords
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 
-# In[7]:
+# In[ ]:
 
 
 laws = pd.read_json("leis.json")
@@ -45,13 +45,13 @@ print(laws.info())
 print(laws.nunique())
 
 
-# In[8]:
+# In[ ]:
 
 
 laws
 
 
-# In[9]:
+# In[ ]:
 
 
 print(laws.loc[len(laws) - 1, "texto"])
@@ -69,13 +69,13 @@ print(laws.loc[len(laws) - 1, "texto"])
 # Finalmente, calcular a similaridade desta consulta
 # para todas as leis na base e retornar as mais próximas.
 
-# In[5]:
+# In[ ]:
 
 
-laws["texto_limpo"] = laws["texto"].apply(clean_text)
+laws["texto_limpo"] = laws["texto"].apply(remove_portuguese_stopwords)
 
 
-# In[6]:
+# In[ ]:
 
 
 vectorizer = CountVectorizer()
@@ -83,7 +83,7 @@ X = vectorizer.fit_transform(laws["texto_limpo"])
 X
 
 
-# In[7]:
+# In[ ]:
 
 
 transformer = TfidfTransformer()
@@ -92,16 +92,16 @@ X_tfidf = transformer.fit_transform(X)
 X_tfidf
 
 
-# In[21]:
+# In[ ]:
 
 
 query = ["rua espassonavel"]
-query[0] = clean_text(query[0])
+query[0] = remove_portuguese_stopwords(query[0])
 query = vectorizer.transform(query)
 query = transformer.transform(query)
 
 
-# In[18]:
+# In[ ]:
 
 
 best_matches = cosine_similarity(query, X_tfidf)

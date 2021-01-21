@@ -23,7 +23,7 @@ import numpy as np
 import pandas as pd
 from gensim.models import Word2Vec
 from gensim.models.doc2vec import Doc2Vec, TaggedDocument
-from scripts.parsers import clean_text
+from scripts.nlp import remove_portuguese_stopwords
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 
@@ -94,7 +94,7 @@ print_law(len(laws) - 1)
 # In[ ]:
 
 
-laws["texto_limpo"] = laws["texto"].apply(clean_text)
+laws["texto_limpo"] = laws["texto"].apply(remove_portuguese_stopwords)
 
 
 # In[ ]:
@@ -479,9 +479,9 @@ model_w2v.most_similar("transporte", topn=10)
 # In[ ]:
 
 
-# PS: Um compilador C torna o Doc2Vec em até 70x mais rápido
 documents = [TaggedDocument(doc, [i]) for i, doc in enumerate(corpus)]
 documents[:2]
+# PS: Um compilador C torna o Doc2Vec em até 70x mais rápido
 
 
 # In[ ]:
@@ -626,9 +626,11 @@ compare_methods(
 # e retornar os resultados que estão na mesma região da query.
 # No entanto, o corpus não é grande o suficiente pra precisar essa estratégia,
 # que é mais pra grandes corpora.
-# O método acima (calcular a simlaridade cosseno e retornar os maiores valores)
+# O método acima
+# (calcular a simlaridade cosseno e retornar os maiores valores)
 # é rápido o suficiente pra parecer instantâneo.
-# Talvez com uma demanda mais alta pelo servidor venha a necessidade de aumentar
+# Talvez com uma demanda mais alta pelo
+# servidor venha a necessidade de aumentar
 # a velocidade da busca, porém por enquanto não é o caso.
 # Mais sobre recuperação: Google lançou [novo método]
 # (https://ai.googleblog.com/2020/07/announcing-scann-efficient-vector.html)
@@ -640,6 +642,7 @@ compare_methods(
 # como avaliar se uma é melhor que a outra?
 # Repetir o processo acima pra todas as opções?
 # Isto é, mostrar N melhores resultados e comparar manualmente?
-# Ou colocar labels em algumas leis? Ex: essa lei trata disso, com tais entidades.
+# Ou colocar labels em algumas leis?
+# Ex: essa lei trata disso, com tais entidades.
 # Checar formas de avaliação.
 # Se tivesse em produção, podia avaliar por CTR por ex, mas não é o caso
