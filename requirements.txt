@@ -7,7 +7,7 @@ nltk==3.5
 opencv-python==4.4.0.46
 pandas==1.2.1
 pre-commit==2.10.0
-pytest==6.2.1
+pytest==6.2.2
 seaborn==0.11.1
 spacy==2.3.5
 texthero==1.0.9
