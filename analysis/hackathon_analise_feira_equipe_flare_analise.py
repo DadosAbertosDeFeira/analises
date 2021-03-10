@@ -24,7 +24,7 @@ import numpy as np
 
 # Dados da educação de Feira de Santana. Os anos usado nas análises foi do censo do ano 1991, 2000 e 2010 
 # Infelizmente Feira de Santana não tem dados do PNAD - IBGE, pois não é capital e nem considerada 
-# região metropolitana ainda.
+# região metropolitana ainda  .
 dados_edu = pd.read_csv('../data/dados_edu.csv', sep=',')
 dados_edu.set_index('Territorialidades',inplace = True)
 dados_edu.drop(index = 'Brasil', inplace = True)
