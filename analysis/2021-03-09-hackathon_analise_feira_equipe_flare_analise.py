@@ -2,7 +2,7 @@
 # coding: utf-8
 
 # # Equipe : FlaRe análise
-# # integrantes: Flávio Monteiro e Rejanio Moraes
+# # integrantes:  Flávio Monteiro e Rejanio Moraes
 # # email: rejaniomoraes@gmail.com
 # ##### relatório explicativo da análise: https://docs.google.com/document/d/1aRzknUnMZdc_e3nqljTfou46NI-mL7rgYOyh1Bw2MAo/edit
 
@@ -12,31 +12,31 @@
 # ###### Ps: Importante salientar que os dados disponíveis do munípicio foi do censo apenas do ano 1991, 2000 e 2010. E em alguns casos só tinha os dados do censo de 2010.
 # ###### Os dados foram coletados do site: https://atlasbrasil.org.br/consulta/planilha
 
-# In[6]:
+# In[ ]:
 
 
 import pandas as pd
 import numpy as np
 
 
-# In[8]:
+# In[ ]:
 
 
 # Dados da educação de Feira de Santana. Os anos usado nas análises foi do censo do ano 1991, 2000 e 2010 
 # Infelizmente Feira de Santana não tem dados do PNAD - IBGE, pois não é capital e nem considerada 
-# região metropolitana ainda  .
+# região metropolitana ainda.
 dados_edu = pd.read_csv('../data/dados_edu.csv', sep=',')
 dados_edu.set_index('Territorialidades',inplace = True)
 dados_edu.drop(index = 'Brasil', inplace = True)
 
 
-# In[9]:
+# In[ ]:
 
 
 dados_edu.head()
 
 
-# In[5]:
+# In[ ]:
 
 
 #trocando , para . para ser transformado em float para análises 
@@ -46,7 +46,7 @@ for row , col in dados_edu.iterrows():
 dados_edu = dados_edu.astype(float)
 
 
-# In[6]:
+# In[ ]:
 
 
 # Analisando dados da porcentagem de 18 anos ou mais de idade com ensino médio completo nos anos de 1991,2000 e 2010
@@ -54,13 +54,13 @@ aux = dados_edu[['% de 18 anos ou mais de idade com ensino médio completo 1991'
 aux
 
 
-# In[7]:
+# In[ ]:
 
 
 grafico = aux.groupby(['Feira de Santana (BA)']).sum()
 
 
-# In[24]:
+# In[ ]:
 
 
 
@@ -69,7 +69,7 @@ ax.set_title("Porcentagem de 18 anos ou mais de idade com ensino médio completo
 ax.legend(bbox_to_anchor=(1.2, 0.5))
 
 
-# In[13]:
+# In[ ]:
 
 
 # Analisando dados da porcentagem de 25 anos ou mais de idade com ensino superior completo nos anos de 1991,2000 e 2010
@@ -83,7 +83,7 @@ aux
 grafico = aux.groupby(['Feira de Santana (BA)']).sum()
 
 
-# In[14]:
+# In[ ]:
 
 
 ax = grafico.plot.bar()
@@ -91,7 +91,7 @@ ax.set_title("Porcentagem de 25 anos ou mais de idade com ensino superior comple
 ax.legend(bbox_to_anchor=(1.2, 0.5))
 
 
-# In[10]:
+# In[ ]:
 
 
 # Dados do trabalho de feira de Santana. Os anos usado nas análises foi do censo do ano 2000 e 2010 
@@ -104,7 +104,7 @@ dados_trabalho.drop(index = 'Brasil', inplace = True)
 dados_trabalho.head()
 
 
-# In[11]:
+# In[ ]:
 
 
 #trocando , para . para ser transformado em float para análises 
@@ -114,7 +114,7 @@ for row , col in dados_trabalho.iterrows():
 dados_trabalho
 
 
-# In[12]:
+# In[ ]:
 
 
 # convertendo todos os campos em float
@@ -122,7 +122,7 @@ dados_trabalho = dados_trabalho.replace(np.nan,0,regex=True)
 dados_trabalho = dados_trabalho.astype(float)
 
 
-# In[13]:
+# In[ ]:
 
 
 # Analisando dados da porcentagem de jovens a partir de 18 anos ocupados COM carteira assinada.
@@ -131,7 +131,7 @@ dados_aux = dados_trabalho[['% de ocupados de 18 anos ou mais de idade que são 
 dados_aux
 
 
-# In[14]:
+# In[ ]:
 
 
 # gerando o gráfico para comparação
@@ -144,7 +144,7 @@ ax.set_title("Porcentagem de ocupados com mais de 18 naos COM carteira assinada"
 ax.legend( bbox_to_anchor = (1.05, 1), loc = 0 , borderaxespad = 0.)
 
 
-# In[7]:
+# In[ ]:
 
 
 # Analisando dados da porcentagem de jovens a partir de 18 anos ocupados SEM carteira assinada.
@@ -153,7 +153,7 @@ dados_aux = dados_trabalho[['% de ocupados de 18 anos ou mais de idade que são 
 dados_aux
 
 
-# In[8]:
+# In[ ]:
 
 
 # gerando o gráfico para comparação
@@ -165,7 +165,7 @@ ax.set_title("Porcentagem de ocupados com mais de 18 naos SEM carteira assinada"
 ax.legend( bbox_to_anchor = (1.05, 1), loc = 0 , borderaxespad = 0.)
 
 
-# In[9]:
+# In[ ]:
 
 
 # Analisando dados do grau de formalização dos ocupados - 18 anos ou mais no ano 2000 e 2010
@@ -173,7 +173,7 @@ dados_aux = dados_trabalho[['Grau de formalização dos ocupados - 18 anos ou ma
 dados_aux
 
 
-# In[10]:
+# In[ ]:
 
 
 # gerando o gráfico para comparação
@@ -185,7 +185,7 @@ ax.set_title("Grau de formalização dos ocupados - 18 anos ou mais")
 ax.legend( bbox_to_anchor = (1.05, 1), loc = 0 , borderaxespad = 0.)
 
 
-# In[11]:
+# In[ ]:
 
 
 # Analisando dados da porcentagem  dos ocupados com ensino médio completo no ano 2000 e 2010
@@ -193,7 +193,7 @@ dados_aux = dados_trabalho[['% dos ocupados com ensino médio completo 2000','% 
 dados_aux
 
 
-# In[12]:
+# In[ ]:
 
 
 # gerando o gráfico para comparação
@@ -205,7 +205,7 @@ ax.set_title(" Porcentagem dos ocupados com ensino médio completo")
 ax.legend( bbox_to_anchor = (1.05, 1), loc = 0 , borderaxespad = 0.)
 
 
-# In[13]:
+# In[ ]:
 
 
 # Analisando dados da porcentagem  dos ocupados com ensino superior completo do 2000  e 2010
@@ -213,7 +213,7 @@ dados_aux = dados_trabalho[['% dos ocupados com ensino superior completo 2000','
 dados_aux
 
 
-# In[14]:
+# In[ ]:
 
 
 # gerando o gráfico para comparação
@@ -225,7 +225,7 @@ ax.set_title("Porcentagem dos ocupados com ensino superior completo")
 ax.legend( bbox_to_anchor = (1.05, 1), loc = 0 , borderaxespad = 0.)
 
 
-# In[20]:
+# In[ ]:
 
 
 # Analisando dados  de rendimento médio dos ocupados do ano 2010, pois o ano 2000 não teve dado.
@@ -234,7 +234,7 @@ dados_aux = dados_trabalho[['Rendimento médio dos ocupados 2010']]
 dados_aux
 
 
-# In[22]:
+# In[ ]:
 
 
 # gerando o gráfico para comparação
@@ -246,7 +246,7 @@ ax.set_title("Rendimento médio dos ocupados")
 ax.legend( bbox_to_anchor = (1.05, 1), loc = 0 , borderaxespad = 0.)
 
 
-# In[23]:
+# In[ ]:
 
 
 # Analisando dados de porcentagem dos ocupados com rendimento de até 1 salário mínimo do ano 2000 e 2010 
@@ -254,7 +254,7 @@ dados_aux = dados_trabalho[['% dos ocupados com rendimento de até 1 salário m�
 dados_aux
 
 
-# In[24]:
+# In[ ]:
 
 
 # gerando o gráfico para comparação
@@ -266,7 +266,7 @@ ax.set_title("Porcentagem dos ocupados com rendimento de até 1 salário mínimo
 ax.legend( bbox_to_anchor = (1.05, 1), loc = 0 , borderaxespad = 0.)
 
 
-# In[25]:
+# In[ ]:
 
 
 # Analisando dados de porcentagem  dos ocupados com rendimento de até 2 salários mínimo do ano 2000 e 2010
@@ -274,7 +274,7 @@ dados_aux = dados_trabalho[['% dos ocupados com rendimento de até 2 salários m
 dados_aux
 
 
-# In[26]:
+# In[ ]:
 
 
 # gerando o gráfico para comparação
