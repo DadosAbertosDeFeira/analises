@@ -1,17 +1,17 @@
-import sys
 import argparse
-from unidecode import unidecode
+import sys
 from pathlib import Path
 
 import pandas as pd
-
 from scripts.parsers import currency_to_float
+from unidecode import unidecode
+
 
 """
 Os arquivos precisam ser salvos no formato `ano_mes_entidade.xls`.
 Exemplo: `2020_04_prefeitura.xls`
 
-O blacscript funciona em arquivos `.xls` onde as duas primeiras
+O script funciona em arquivos `.xls` onde as duas primeiras
 linhas  e as últimas 3 linhas são ignoradas. No caso de erro
 'Workbook corruption: seen[3] == 4' abra os arquivos `.xls`
 dos contracheques, use a opção "Salvar Como" para salvar
