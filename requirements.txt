@@ -8,6 +8,7 @@ opencv-python==4.5.1.48
 pandas==1.2.2
 pre-commit==2.10.1
 pytest==6.2.2
+pytest-mock==3.5.1
 seaborn==0.11.1
 spacy==3.0.3
 texthero==1.0.9
