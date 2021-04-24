@@ -15,7 +15,7 @@ def get_geocode_info(address, raise_exception=False):
         "in": "countryCode:BRA",
     }
     response = requests.get(
-        "https://geocode.search.hereapi.com/v1/geocode", params=params
+        "https://geocode.search.hereapi.com/v1/geocode", params=params, timeout=10
     )
     if raise_exception:
         response.raise_for_status()
