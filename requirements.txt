@@ -9,7 +9,7 @@ pandas==1.2.2
 pre-commit==2.10.1
 pytest==6.2.2
 seaborn==0.11.1
-spacy==3.0.3
+spacy==3.0.6
 texthero==1.0.9
 unidecode==1.2.0
 wordcloud==1.8.1
