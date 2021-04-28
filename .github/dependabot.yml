@@ -1,0 +1,14 @@
+version: 2
+updates:
+- package-ecosystem: pip
+  directory: "/"
+  schedule:
+    interval: monthly
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: spacy
+    versions:
+    - 3.0.3
+  - dependency-name: opencv-python
+    versions:
+    - 4.5.1.48
