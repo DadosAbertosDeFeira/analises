@@ -2,10 +2,10 @@ black==21.4b2
 flake8==3.8.4
 isort==5.8.0
 jupyter==1.0.0
-matplotlib==3.3.4
+matplotlib==3.4.1
 nltk==3.6.2
 opencv-python==4.5.1.48
-pandas==1.2.2
+pandas==1.2.4
 pre-commit==2.12.1
 pytest==6.2.3
 seaborn==0.11.1
