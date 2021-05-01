@@ -1,6 +1,7 @@
 import nltk
 import spacy
 from nltk.tokenize import word_tokenize
+from scripts.stopwords import CUSTOM_STOPWORDS
 
 try:
     # se não tiver na máquina faz o download
@@ -18,7 +19,7 @@ def remove_portuguese_stopwords(text, custom_stopwords=None):
     all_stopwords = sp.Defaults.stop_words
     abc = [char for char in "abcdefghijklmnopqrstuvxyzw"]
     if not custom_stopwords:
-        custom_stopwords = []
+        custom_stopwords = CUSTOM_STOPWORDS
     aditional_stopwords = list(all_stopwords) + abc + custom_stopwords
 
     text_tokens = word_tokenize(text)

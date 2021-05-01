@@ -8,6 +8,11 @@ from scripts.nlp import remove_portuguese_stopwords
         ("GILBERTO REIS FILHO DE JÚ", "gilberto reis filho jú"),
         ("A casa dela é bela", "casa dela bela"),
         ("A de da e", ""),
+        ("Onde.Vai", "onde.vai"),
+        ("Qualquer uma destas xx casas", "casas"),
+        ("Pé-De-Moleque", "pé-de-moleque"),
+        ("Dois-pontos:", "dois-pontos :"),
+        ("Final de frase.", "frase ."),
     ],
 )
 def test_remove_stop_words(text, expected_text):
