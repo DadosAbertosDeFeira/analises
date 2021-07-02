@@ -6,7 +6,7 @@ jupyter==1.0.0
 matplotlib==3.4.2
 nltk==3.6.2
 numpy==1.21.0
-opencv-python==4.5.1.48
+opencv-python==4.5.2.54
 pandas==1.2.4
 pre-commit==2.12.1
 pytest==6.2.3
