@@ -1,4 +1,4 @@
-black==21.4b2
+black==21.6b0
 flake8==3.9.2
 gensim==3.8.3
 isort==5.8.0
