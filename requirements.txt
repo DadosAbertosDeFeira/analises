@@ -1,7 +1,7 @@
 black==21.6b0
 flake8==3.9.2
 gensim==4.0.1
-isort==5.8.0
+isort==5.9.1
 jupyter==1.0.0
 matplotlib==3.4.2
 nltk==3.6.2
