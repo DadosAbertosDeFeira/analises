@@ -15,7 +15,7 @@
 #
 # A análise foi feita com arquivos do [repositório de dados eleitorais do TSE](https://www.tse.jus.br/eleicoes/estatisticas/repositorio-de-dados-eleitorais-1/repositorio-de-dados-eleitorais).
 #
-# Faça o download do arquivo: http://agencia.tse.jus.br/estatistica/sead/odsele/prestacao_contas/prestacao_de_contas_eleitorais_candidatos_2020.zip (download feito em 25/11/2020)
+# Faça o download do arquivo: https://cdn.tse.jus.br/estatistica/sead/odsele/prestacao_contas/prestacao_de_contas_eleitorais_candidatos_2020.zip (download feito em 16/10/2021)
 #
 # Siga o seguinte caminho dentro da pasta:
 # ```
@@ -34,7 +34,7 @@
 # * Campo `UF`: `BR` para nível nacional, `VT` voto em trânsito e `ZZ` para Exterior
 # * Campo `NM_UE`, no caso de eleições municipais, é o nome do município
 
-# In[41]:
+# In[ ]:
 
 
 import matplotlib.pyplot as plt
@@ -42,25 +42,33 @@ import pandas as pd
 import seaborn as sns
 from scripts.parsers import currency_to_float, is_company
 
-df = pd.read_csv("receitas_candidatos_2020_BA.csv", encoding="latin", delimiter=";")
+df = pd.read_csv(
+    "receitas_candidatos_2020_BA-16.10.2020.csv", encoding="latin", delimiter=";"
+)
 
 
-# In[42]:
+# In[ ]:
 
 
-# In[43]:
+pd.set_option("display.max_rows", None)
+
+
+# In[ ]:
+
+
+# In[ ]:
 
 
 df_feira = df[df["NM_UE"] == "FEIRA DE SANTANA"].copy()
 
 
-# In[44]:
+# In[ ]:
 
 
 df_feira["VR_RECEITA"] = df_feira["VR_RECEITA"].apply(currency_to_float)
 
 
-# In[45]:
+# In[ ]:
 
 
 fields = [
@@ -85,7 +93,7 @@ df_filtered = df_feira[fields]
 # Para melhorar a experiência das pessoas na visualização dos dados vamos substituir
 # o valor "#NULO#" por vazio.
 
-# In[46]:
+# In[ ]:
 
 
 df_filtered = df_filtered.replace("#NULO#", "").copy()
@@ -100,7 +108,7 @@ df_filtered[df_filtered["NM_PARTIDO_DOADOR"] == "#NULO#"]
 #
 # Abaixo uma amostra aleatória de 5 doações recebidas:
 
-# In[47]:
+# In[ ]:
 
 
 mayor_df = df_filtered[df_filtered["DS_CARGO"] == "Prefeito"]
@@ -109,7 +117,7 @@ mayor_df.sample(5)  # amostra das doações a prefeitos de Feira de Santana
 
 # ### Total, mediana e número de doações recebidas por candidato
 
-# In[48]:
+# In[ ]:
 
 
 statistics = (
@@ -120,7 +128,7 @@ statistics = (
 statistics
 
 
-# In[49]:
+# In[ ]:
 
 
 ax = sns.histplot(data=statistics, x="sum")
@@ -131,7 +139,7 @@ ax.xaxis.get_major_formatter().set_scientific(False)
 plt.xticks(rotation=45)
 
 
-# In[50]:
+# In[ ]:
 
 
 ax = sns.barplot(
@@ -151,7 +159,7 @@ plt.xticks(rotation=45)
 
 # ## Quem são os doadores?
 
-# In[51]:
+# In[ ]:
 
 
 mayor_df.groupby(
@@ -167,7 +175,7 @@ mayor_df.groupby(
 
 # ### Qual a origem dos recursos?
 
-# In[52]:
+# In[ ]:
 
 
 ax = sns.stripplot(
@@ -194,7 +202,7 @@ ax.set_xticklabels(ax.get_xticklabels(), rotation=90)
 #
 # ### Veja os valores por candidato e origem
 
-# In[53]:
+# In[ ]:
 
 
 mayor_df.groupby(["NM_CANDIDATO", "DS_ORIGEM_RECEITA"])["VR_RECEITA"].agg(["sum"])
@@ -202,7 +210,7 @@ mayor_df.groupby(["NM_CANDIDATO", "DS_ORIGEM_RECEITA"])["VR_RECEITA"].agg(["sum"
 
 # ## Ranking de Doadores
 
-# In[54]:
+# In[ ]:
 
 
 mayor_df.groupby(["NM_DOADOR_RFB", "NM_DOADOR"])["VR_RECEITA"].agg(["sum"]).sort_values(
@@ -212,7 +220,7 @@ mayor_df.groupby(["NM_DOADOR_RFB", "NM_DOADOR"])["VR_RECEITA"].agg(["sum"]).sort
 
 # ## As pessoas que doaram estão ligadas a empresas diretamente?
 
-# In[55]:
+# In[ ]:
 
 
 def mask_cpf(cpf):
@@ -251,7 +259,7 @@ donated_by_people[
 # O valor `#NULO#` representa as doações feitas por todas as outras entidades que não são
 # partidos (como pessoas e aplicativos de doação).
 
-# In[56]:
+# In[ ]:
 
 
 donations_by_party = (
@@ -263,7 +271,7 @@ donations_by_party = (
 donations_by_party
 
 
-# In[57]:
+# In[ ]:
 
 
 ax = sns.barplot(
@@ -278,8 +286,7 @@ plt.xticks(rotation=45)
 
 # ## Veja todas as doações
 
-# In[58]:
+# In[ ]:
 
 
-pd.set_option("display.max_rows", None)
 mayor_df
