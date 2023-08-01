@@ -3,7 +3,7 @@ flake8==4.0.1
 gensim==4.1.2
 isort==5.10.1
 jupyter==1.0.0
-matplotlib==3.5.1
+matplotlib==3.7.2
 nltk==3.6.5
 numpy==1.21.4
 opencv-python==4.5.5.62
